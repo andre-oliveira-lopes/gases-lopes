@@ -1,0 +1,7 @@
+# Ignorar dependências e arquivos de build
+node_modules/
+dist/
+*.exe
+*.dll
+*.log
+.env
