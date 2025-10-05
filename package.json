@@ -5,7 +5,9 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "scss": "sass assets/scss/main.scss assets/css/main.css",
+    "scss:watch": "sass --watch assets/scss/main.scss:assets/css/main.css"
   },
   "keywords": [],
   "author": "",
@@ -13,5 +15,9 @@
   "devDependencies": {
     "electron": "^38.0.0",
     "electron-packager": "^17.1.2"
+  },
+  "dependencies": {
+    "deve": "^0.0.0",
+    "sass": "^1.93.2"
   }
 }

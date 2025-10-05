@@ -1,0 +1,39 @@
+// ============================================
+// BASE LAYOUT - Estrutura principal do app
+// Local: assets/scss/layout/_base.scss
+// ============================================
+
+@use '../abstracts/variables' as var;
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.main-content {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    overflow: hidden;
+}
+
+.content {
+    margin-left: var.$sidebar-width; // ← ADICIONAR (compensa a sidebar fixa)
+    margin-top: var.$topbar-height;  // ← ADICIONAR (compensa a topbar)
+    flex: 1;
+    overflow-y: auto;
+    padding: var.$spacing-xl;
+    background-color: var.$color-background;
+}

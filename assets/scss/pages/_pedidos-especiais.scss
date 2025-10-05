@@ -1,0 +1,89 @@
+// ============================================
+// PEDIDOS ESPECIAIS - Página específica
+// Local: assets/scss/pages/_pedidos-especiais.scss
+// ============================================
+
+// 1. Importa as variáveis, permitindo o uso com o prefixo 'var.'
+@use '../abstracts/variables' as var;
+
+.app-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    background-color: var.$color-background; // <-- CORRIGIDO
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.page-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: var.$spacing-xl; // <-- CORRIGIDO
+}
+
+.page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: var.$spacing-lg; // <-- CORRIGIDO
+
+    &__left {
+        display: flex;
+        align-items: center;
+        gap: var.$spacing-lg; // <-- CORRIGIDO
+    }
+
+    &__icon {
+        width: 90px;
+        height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    &__title {
+        font-size: var.$font-size-title; // <-- CORRIGIDO
+        font-weight: var.$font-weight-bold; // <-- CORRIGIDO
+        color: var.$color-text; // <-- CORRIGIDO
+    }
+
+    &__info {
+        max-width: 400px;
+    }
+
+    &__label {
+        font-size: var.$font-size-small; // <-- CORRIGIDO
+        font-weight: var.$font-weight-medium; // <-- CORRIGIDO
+        color: var.$color-text; // <-- CORRIGIDO
+        margin-bottom: var.$spacing-xs; // <-- CORRIGIDO
+    }
+
+    &__description {
+        font-size: var.$font-size-small; // <-- CORRIGIDO
+        color: var.$color-text-secondary; // <-- CORRIGIDO
+        line-height: 1.6;
+    }
+}
+
+.page-divider {
+    border: none;
+    border-top: 2px solid var.$color-border; // <-- CORRIGIDO
+    margin: 0 0 var.$spacing-xl 0; // <-- CORRIGIDO
+}
+
+.content-area {
+    // Espaço para o conteúdo específico da página
+    min-height: 400px;
+}

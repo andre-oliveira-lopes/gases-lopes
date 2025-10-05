@@ -1,0 +1,87 @@
+// ============================================
+// SIDEBAR - Menu lateral
+// Local: assets/scss/layout/_sidebar.scss
+// ============================================
+
+@use '../abstracts/variables' as var;
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: var.$sidebar-width;
+    height: 100vh;
+    background-color: var.$color-sidebar-bg;
+    border-right: 1px solid var.$color-border;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex-shrink: 0;
+
+    &__header {
+        height: var.$topbar-height; // ← ADICIONAR: mesma altura da topbar
+        display: flex;              // ← ADICIONAR
+        align-items: center;        // ← ADICIONAR: centraliza verticalmente
+        padding: 0 var.$spacing-lg; // ← MUDAR: padding lateral apenas
+        border-bottom: 1px solid var.$color-border;
+        flex-shrink: 0;             // ← ADICIONAR: impede que encolha
+    }
+
+    &__title {
+        font-size: var.$font-size-subtitle;
+        font-weight: var.$font-weight-bold;
+        color: var.$color-text;
+    }
+
+    &__nav {
+        padding: var.$spacing-lg var.$spacing-md;
+    }
+
+    &__section-title {
+        font-size: var.$font-size-small;
+        font-weight: var.$font-weight-medium;
+        color: var.$color-text;
+        margin-bottom: var.$spacing-sm;
+        margin-top: var.$spacing-lg;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    &__menu {
+        display: flex;
+        flex-direction: column;
+        gap: var.$spacing-xs;
+    }
+
+    &__menu-item {
+        &--active {
+            .sidebar__link {
+                background-color: var.$color-active-bg;
+                font-weight: var.$font-weight-medium;
+            }
+        }
+    }
+
+    &__link {
+        display: flex;
+        align-items: center;
+        gap: var.$spacing-sm;
+        padding: var.$spacing-sm var.$spacing-md;
+        border-radius: var.$border-radius-sm;
+        color: var.$color-text;
+        transition: var.$transition-fast;
+
+        &:hover {
+            background-color: var.$color-hover;
+        }
+    }
+
+    &__icon {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+    }
+}

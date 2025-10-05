@@ -1,0 +1,7 @@
+// Estilos de texto
+@use "../abstracts/variables";
+
+body {
+  font-family: variables.$font-main;
+  color: #222;
+}

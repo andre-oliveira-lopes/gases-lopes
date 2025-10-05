@@ -1,0 +1,27 @@
+// ============================================
+// Estilos para botões
+// Local: assets/scss/components/_buttons.scss
+// ============================================
+
+// 1. Importa as variáveis, permitindo o uso com o prefixo 'var.'
+@use '../abstracts/variables' as var;
+
+.button {
+    // 2. Acessa a variável com o prefixo 'var.'
+    background: var.$color-primary;
+    
+    // Supondo que as variáveis de espaçamento, cor de texto e border-radius
+    // também estejam em 'variables.scss', vamos corrigi-las preventivamente.
+    color: var.$color-text-inverse; // Ajuste este nome se for diferente
+    border: none;
+    padding: var.$spacing-sm var.$spacing-md; // Presumindo espaçamentos
+    border-radius: var.$border-radius-sm; // Presumindo variável de radius
+    cursor: pointer;
+}
+
+// Se você tiver variações de botões, use o mesmo padrão:
+/*
+.button--secondary {
+    background: var.$secondary-color;
+}
+*/

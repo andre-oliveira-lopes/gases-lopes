@@ -1,0 +1,27 @@
+// Importação dos módulos SCSS
+// ============================================
+// MAIN SCSS - Arquivo principal de importação
+// Local: assets/scss/main.scss
+// ============================================
+// Este arquivo importa todos os outros arquivos SCSS
+// na ordem correta para compilação
+
+// 1. Abstracts (variáveis e mixins)
+@use "abstracts/variables";
+@use "abstracts/mixins";
+
+// 2. Base (reset e tipografia)
+@use "base/reset";
+@use "base/typography";
+
+// 3. Layout (estrutura da página)
+@use 'layout/base';
+@use "layout/sidebar";
+@use "layout/topbar";
+
+// 4. Components (componentes reutilizáveis)
+@use "components/buttons";
+
+// 5. Pages (estilos específicos de páginas)
+@use "pages/home";
+@use "pages/pedidos-especiais"; // Página de Pedidos Especiais

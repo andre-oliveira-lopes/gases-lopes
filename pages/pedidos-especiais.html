@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gases União - Pedidos Especiais</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- Header da Sidebar -->
+            <div class="sidebar__header">
+                <h1 class="sidebar__title">Gases União app</h1>
+            </div>
+
+            <!-- Menu de Atividades -->
+            <nav class="sidebar__nav">
+                <h2 class="sidebar__section-title">Atividades</h2>
+                <ul class="sidebar__menu">
+                    <li class="sidebar__menu-item">
+                        <a href="../index.html" class="sidebar__link">
+                            <img src="../assets/icons/home.svg" alt="" class="sidebar__icon">
+                            <!-- ☝️ SUBSTITUA O CAMINHO DO ÍCONE -->
+                            <span>Início</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__menu-item">
+                        <a href="buscar.html" class="sidebar__link">
+                            <img src="../assets/icons/search.svg" alt="" class="sidebar__icon">
+                            <!-- ☝️ SUBSTITUA O CAMINHO DO ÍCONE -->
+                            <span>Buscar</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__menu-item">
+                        <a href="nota-entrega.html" class="sidebar__link">
+                            <img src="../assets/icons/nota-entrega.svg" alt="" class="sidebar__icon">
+                            <!-- ☝️ SUBSTITUA O CAMINHO DO ÍCONE -->
+                            <span>Nota de Entrega</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__menu-item">
+                        <a href="nota-emprestimo.html" class="sidebar__link">
+                            <img src="../assets/icons/nota-emprestimo.svg" alt="" class="sidebar__icon">
+                            <!-- ☝️ SUBSTITUA O CAMINHO DO ÍCONE -->
+                            <span>Nota de Emprestimo</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__menu-item sidebar__menu-item--active">
+                        <a href="pedidos-especiais.html" class="sidebar__link">
+                            <img src="../assets/icons/pedidos-especiais.svg" alt="" class="sidebar__icon">
+                            <!-- ☝️ SUBSTITUA O CAMINHO DO ÍCONE -->
+                            <span>Pedidos Especiais</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__menu-item">
+                        <a href="fornecedor.html" class="sidebar__link">
+                            <img src="../assets/icons/fornecedor.svg" alt="" class="sidebar__icon">
+                            <!-- ☝️ SUBSTITUA O CAMINHO DO ÍCONE -->
+                            <span>Fornecedor</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Menu de Informações -->
+                <h2 class="sidebar__section-title">Informações</h2>
+                <ul class="sidebar__menu">
+                    <li class="sidebar__menu-item">
+                        <a href="tabela-precos.html" class="sidebar__link">
+                            <img src="../assets/icons/tabela-precos.svg" alt="" class="sidebar__icon">
+                            <!-- ☝️ SUBSTITUA O CAMINHO DO ÍCONE -->
+                            <span>Tabela de Preços</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__menu-item">
+                        <a href="dados-cilindros.html" class="sidebar__link">
+                            <img src="../assets/icons/dados-cilindros.svg" alt="" class="sidebar__icon">
+                            <!-- ☝️ SUBSTITUA O CAMINHO DO ÍCONE -->
+                            <span>Dados dos Cilindros</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__menu-item">
+                        <a href="dashboard.html" class="sidebar__link">
+                            <img src="../assets/icons/dashboard.svg" alt="" class="sidebar__icon">
+                            <!-- ☝️ SUBSTITUA O CAMINHO DO ÍCONE -->
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Área Principal -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div class="topbar__left">
+                    <!-- Vazio por enquanto -->
+                </div>
+                <div class="topbar__right">
+                    <button class="topbar__menu-btn" aria-label="Menu de opções">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <button class="topbar__exit-btn">Sair</button>
+                    <div class="topbar__user">
+                        <img src="../assets/images/avatar.png" alt="Avatar do usuário" class="topbar__avatar">
+                        <!-- ☝️ SUBSTITUA O CAMINHO DA IMAGEM DO AVATAR -->
+                        <button class="topbar__dropdown-btn" aria-label="Menu do usuário">
+                            <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+                                <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Conteúdo da Página -->
+            <div class="page-content">
+                <!-- Header da Página -->
+                <div class="page-header">
+                    <div class="page-header__left">
+                        <div class="page-header__icon">
+                            <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
+                                <circle cx="45" cy="45" r="18" stroke="currentColor" stroke-width="3"/>
+                                <path d="M45 27C45 27 30 35 30 45C30 55 45 63 45 63" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                                <path d="M45 27C45 27 60 35 60 45C60 55 45 63 45 63" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <h1 class="page-header__title">Pedidos Especiais</h1>
+                    </div>
+                    <div class="page-header__info">
+                        <p class="page-header__label">Explicação:</p>
+                        <p class="page-header__description">Faz a nota de entrega do material sa aqui ......</p>
+                    </div>
+                </div>
+
+                <!-- Linha Divisória -->
+                <hr class="page-divider">
+
+                <!-- Área de Conteúdo -->
+                <div class="content-area">
+                    <!-- Aqui vai o conteúdo específico da página -->
+                    <p>Conteúdo de Pedidos Especiais virá aqui...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../assets/js/navigation.js"></script>
+</body>
+</html>

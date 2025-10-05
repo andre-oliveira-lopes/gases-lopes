@@ -1,13 +1,121 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Gases União - Início</title>
+    <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
-    <h1>Olá, Mundo!</h1>
-    <p>Este é um documento HTML básico.</p>
+    <div class="app-container">
+        <!-- Top Bar - MOVE PARA FORA DO MAIN-CONTENT -->
+        <header class="topbar">
+            <div class="topbar__left">
+                <!-- Vazio por enquanto -->
+            </div>
+            <div class="topbar__right">
+                <button class="topbar__menu-btn" aria-label="Menu de opções">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <button class="topbar__exit-btn">Sair</button>
+                <div class="topbar__user">
+                    <img src="assets/images/my-face.png" alt="Avatar do usuário" class="topbar__avatar">
+                    <button class="topbar__dropdown-btn" aria-label="Menu do usuário">
+                        <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+                            <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Container do conteúdo (Sidebar + Conteúdo) -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <!-- Header da Sidebar -->
+                <div class="sidebar__header">
+                    <h1 class="sidebar__title">Gases União app</h1>
+                </div>
+
+                <!-- Menu de Atividades -->
+                <nav class="sidebar__nav">
+                    <h2 class="sidebar__section-title">Atividades</h2>
+                    <ul class="sidebar__menu">
+                        <li class="sidebar__menu-item sidebar__menu-item--active">
+                            <a href="index.html" class="sidebar__link">
+                                <img src="assets/icons/inicio.svg" alt="" class="sidebar__icon">
+                                <span>Início</span>
+                            </a>
+                        </li>
+                        <li class="sidebar__menu-item">
+                            <a href="pages/buscar.html" class="sidebar__link">
+                                <img src="assets/icons/inicio.svg" alt="" class="sidebar__icon">
+                                <span>Buscar</span>
+                            </a>
+                        </li>
+                        <li class="sidebar__menu-item">
+                            <a href="pages/nota-entrega.html" class="sidebar__link">
+                                <img src="assets/icons/inicio.svg" alt="" class="sidebar__icon">
+                                <span>Nota de Entrega</span>
+                            </a>
+                        </li>
+                        <li class="sidebar__menu-item">
+                            <a href="pages/nota-emprestimo.html" class="sidebar__link">
+                                <img src="assets/icons/inicio.svg" alt="" class="sidebar__icon">
+                                <span>Nota de Emprestimo</span>
+                            </a>
+                        </li>
+                        <li class="sidebar__menu-item">
+                            <a href="pages/pedidos-especiais.html" class="sidebar__link">
+                                <img src="assets/icons/inicio.svg" alt="" class="sidebar__icon">
+                                <span>Pedidos Especiais</span>
+                            </a>
+                        </li>
+                        <li class="sidebar__menu-item">
+                            <a href="pages/fornecedor.html" class="sidebar__link">
+                                <img src="assets/icons/inicio.svg" alt="" class="sidebar__icon">
+                                <span>Fornecedor</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Menu de Informações -->
+                    <h2 class="sidebar__section-title">Informações</h2>
+                    <ul class="sidebar__menu">
+                        <li class="sidebar__menu-item">
+                            <a href="pages/tabela-precos.html" class="sidebar__link">
+                                <img src="assets/icons/inicio.svg" alt="" class="sidebar__icon">
+                                <span>Tabela de Preços</span>
+                            </a>
+                        </li>
+                        <li class="sidebar__menu-item">
+                            <a href="pages/dados-cilindros.html" class="sidebar__link">
+                                <img src="assets/icons/inicio.svg" alt="" class="sidebar__icon">
+                                <span>Dados dos Cilindros</span>
+                            </a>
+                        </li>
+                        <li class="sidebar__menu-item">
+                            <a href="pages/dashboard.html" class="sidebar__link">
+                                <img src="assets/icons/inicio.svg" alt="" class="sidebar__icon">
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- Área de Conteúdo Principal -->
+            <main class="content">
+                <!-- Aqui você pode adicionar conteúdo específico da página inicial -->
+                <h1>Bem-vindo ao Gases União</h1>
+                <p>Conteúdo da página inicial aqui...</p>
+            </main>
+        </div>
+    </div>
+
+    <script src="assets/js/navigation.js"></script>
 </body>
 </html>
-

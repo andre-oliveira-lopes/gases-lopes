@@ -1,0 +1,42 @@
+// ============================================
+// TOPBAR - Barra superior
+// Local: assets/scss/layout/_topbar.scss
+// ============================================
+
+@use '../abstracts/variables' as var;
+
+.topbar {
+    height: var.$topbar-height;
+    background-color: var.$color-background;
+    border-bottom: 1px solid var.$color-border;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var.$spacing-xl;
+    // REMOVA o margin-left se você adicionou
+
+    &__left {
+        display: flex;
+        align-items: center;
+        gap: var.$spacing-md;
+    }
+
+    &__right {
+        display: flex;
+        align-items: center;
+        gap: var.$spacing-md;
+    }
+
+    &__user {
+        display: flex;
+        align-items: center;
+        gap: var.$spacing-xs;
+    }
+
+    &__avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: var.$border-radius-full;
+        object-fit: cover;
+    }
+}
