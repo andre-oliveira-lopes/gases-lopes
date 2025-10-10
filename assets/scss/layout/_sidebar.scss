@@ -24,6 +24,7 @@
         display: flex;              // ← ADICIONAR
         align-items: center;        // ← ADICIONAR: centraliza verticalmente
         padding: 0 var.$spacing-lg; // ← MUDAR: padding lateral apenas
+        justify-content: center;
         border-bottom: 1px solid var.$color-border;
         flex-shrink: 0;             // ← ADICIONAR: impede que encolha
     }
@@ -32,6 +33,7 @@
         font-size: var.$font-size-subtitle;
         font-weight: var.$font-weight-bold;
         color: var.$color-text;
+        margin-top: 25px;
     }
 
     &__nav {
@@ -39,12 +41,14 @@
     }
 
     &__section-title {
-        font-size: var.$font-size-small;
-        font-weight: var.$font-weight-medium;
+        font-size: 14px;                    // Aumentado de 12px
+        font-weight: var.$font-weight-bold; // Negrito
         color: var.$color-text;
         margin-bottom: var.$spacing-sm;
         margin-top: var.$spacing-lg;
-
+        text-transform: capitalize;      // Primeira letra maiúscula         
+        letter-spacing: 0.5px;              // Espaçamento
+        
         &:first-child {
             margin-top: 0;
         }
@@ -54,6 +58,7 @@
         display: flex;
         flex-direction: column;
         gap: var.$spacing-xs;
+        list-style: none;
     }
 
     &__menu-item {
@@ -72,6 +77,8 @@
         padding: var.$spacing-sm var.$spacing-md;
         border-radius: var.$border-radius-sm;
         color: var.$color-text;
+        text-decoration: none;
+        white-space: nowrap;
         transition: var.$transition-fast;
 
         &:hover {

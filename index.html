@@ -8,25 +8,37 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- Top Bar - MOVE PARA FORA DO MAIN-CONTENT -->
+        <!-- Top Bar -->
         <header class="topbar">
             <div class="topbar__left">
                 <!-- Vazio por enquanto -->
             </div>
             <div class="topbar__right">
-                <button class="topbar__menu-btn" aria-label="Menu de opções">
+                <!-- Botão de Configurações (Reticências) -->
+                <button class="topbar__menu-btn" id="settingsBtn" aria-label="Configurações do sistema">
                     <span></span>
                     <span></span>
                     <span></span>
                 </button>
+
+                <!-- Botão Sair -->
                 <button class="topbar__exit-btn">Sair</button>
-                <div class="topbar__user">
+
+                <!-- Usuário -->
+                <div class="topbar__user" id="userMenu">
                     <img src="assets/images/my-face.png" alt="Avatar do usuário" class="topbar__avatar">
                     <button class="topbar__dropdown-btn" aria-label="Menu do usuário">
                         <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
                             <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                     </button>
+
+                    <!-- Dropdown do Usuário -->
+                    <div class="topbar__user-dropdown" id="userDropdown">
+                        <div class="topbar__dropdown-item">Trocar Imagem</div>
+                        <div class="topbar__dropdown-item">Alterar Nome</div>
+                        <div class="topbar__dropdown-item">Minha Conta</div>
+                    </div>
                 </div>
             </div>
         </header>
@@ -109,13 +121,40 @@
 
             <!-- Área de Conteúdo Principal -->
             <main class="content">
-                <!-- Aqui você pode adicionar conteúdo específico da página inicial -->
                 <h1>Bem-vindo ao Gases União</h1>
                 <p>Conteúdo da página inicial aqui...</p>
             </main>
         </div>
     </div>
 
+    <!-- Modal de Configurações -->
+    <div class="settings-modal" id="settingsModal">
+        <div class="settings-modal__content">
+            <button class="settings-modal__close" id="closeSettings">&times;</button>
+            
+            <aside class="settings-modal__sidebar">
+                <h3 style="margin-bottom: 1rem;">Configurações</h3>
+                <div class="settings-modal__menu-item active" data-page="aparencia">
+                    Aparência
+                </div>
+                <div class="settings-modal__menu-item" data-page="conta">
+                    Conta
+                </div>
+                <div class="settings-modal__menu-item" data-page="notificacoes">
+                    Notificações
+                </div>
+            </aside>
+
+            <div class="settings-modal__body" id="settingsBody">
+                <!-- O conteúdo será carregado aqui dinamicamente -->
+                <div class="settings-loading">
+                    <p>Carregando...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="assets/js/navigation.js"></script>
+    <script src="assets/js/topbar.js"></script>
 </body>
 </html>
