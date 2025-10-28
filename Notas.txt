@@ -1,1 +1,66 @@
-só pra escrever algo que eu queria no decorrer da construção gitclear 
+-- commit: adicionei o banco, concertei o erro do botão sair 
+-- lembrete: aviso de segurança do Electron alertando que seu app está 
+configurado de forma que pode ser vulnerável a certos tipos de ataques.
+
+
+----------> feature" (funcionalidade)
+* Adicionar uma nova aba no trecho atividades, com o nome "Troca"
+    - essa aba deve apresentar uma forma facil de fazer troca entre cilindros 
+    de clientes e da empresa. 
+
+
+
+
+
+const db = require('../db');
+
+function criarCilindro(cilindro) {
+    const stmt = db.prepare(`
+        INSERT INTO cilindros (codigo, tipo, capacidade, pressao_max, status)
+        VALUES (?, ?, ?, ?, ?)
+    `);
+    
+    const result = stmt.run(
+        cilindro.codigo,
+        cilindro.tipo,
+        cilindro.capacidade,
+        cilindro.pressao_max || null,
+        cilindro.status || 'disponivel'
+    );
+    
+    return result.lastInsertRowid;
+}
+
+function listarCilindros(filtros = {}) {
+    let query = 'SELECT * FROM cilindros WHERE 1=1';
+    const params = [];
+    
+    if (filtros.status) {
+        query += ' AND status = ?';
+        params.push(filtros.status);
+    }
+    
+    query += ' ORDER BY codigo';
+    
+    const stmt = db.prepare(query);
+    return stmt.all(...params);
+}
+
+module.exports = {
+    criarCilindro,
+    listarCilindros
+};
+
+
+-------------------------------
+
+const cilindrosModel = require('./database/models/cilindros');
+
+ipcMain.handle('cilindros:listar', async (event, filtros) => {
+    return cilindrosModel.listarCilindros(filtros);
+});
+
+ipcMain.handle('cilindros:criar', async (event, cilindro) => {
+    const id = cilindrosModel.criarCilindro(cilindro);
+    return { success: true, id };
+});

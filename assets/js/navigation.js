@@ -47,16 +47,13 @@ function setupExitButton() {
     const exitBtn = document.querySelector('.topbar__exit-btn');
     
     if (exitBtn) {
-        exitBtn.addEventListener('click', () => {
-            // Aqui você pode adicionar lógica de logout
-            // Por enquanto, apenas fecha a janela do Electron
-            if (window.require) {
-                const { remote } = window.require('electron');
-                const currentWindow = remote.getCurrentWindow();
-                currentWindow.close();
-            } else {
-                // Fallback para desenvolvimento no browser
-                if (confirm('Deseja realmente sair?')) {
+        exitBtn.addEventListener('click', async () => {
+            if (confirm('Deseja realmente sair?')) {
+                try {
+                    const { ipcRenderer } = require('electron');
+                    await ipcRenderer.invoke('app:fechar');
+                } catch (error) {
+                    console.error('Erro ao sair:', error);
                     window.close();
                 }
             }

@@ -5,6 +5,8 @@
 
 // 1. Importa as variáveis, permitindo o uso com o prefixo 'var.'
 @use '../abstracts/variables' as var;
+// 2. Importa o módulo de cores do Sass para manipulação de cores
+@use "sass:color";
 
 .app-container {
     display: flex;
@@ -86,4 +88,225 @@
 .content-area {
     // Espaço para o conteúdo específico da página
     min-height: 400px;
+}
+
+// ============================================
+// MODAL DE EDIÇÃO
+// ============================================
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s;
+
+    &.show {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.modal-content {
+    background-color: var.$color-background;
+    padding: var.$spacing-xl;
+    border-radius: var.$border-radius-lg;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideDown 0.3s;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var.$spacing-lg;
+    padding-bottom: var.$spacing-md;
+    border-bottom: 2px solid var.$color-border;
+
+    h2 {
+        margin: 0;
+        font-size: var.$font-size-title;
+        font-weight: var.$font-weight-bold;
+    }
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: var.$color-text-secondary;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var.$transition-base;
+
+    &:hover {
+        color: var.$color-text;
+    }
+}
+
+.form-group {
+    margin-bottom: var.$spacing-lg;
+
+    label {
+        display: block;
+        margin-bottom: var.$spacing-xs;
+        font-weight: var.$font-weight-medium;
+        color: var.$color-text;
+        font-size: var.$font-size-base;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        padding: var.$spacing-sm;
+        border: 1px solid var.$color-border;
+        border-radius: var.$border-radius-sm;
+        font-size: var.$font-size-base;
+        font-family: inherit;
+        transition: var.$transition-base;
+
+        &:focus {
+            outline: none;
+            border-color: var.$color-text;
+        }
+    }
+
+    textarea {
+        resize: vertical;
+    }
+}
+
+.form-actions {
+    display: flex;
+    gap: var.$spacing-sm;
+    justify-content: flex-end;
+    margin-top: var.$spacing-xl;
+    padding-top: var.$spacing-lg;
+    border-top: 1px solid var.$color-border;
+}
+
+// ============================================
+// BOTÕES
+// ============================================
+
+.btn {
+    padding: var.$spacing-sm var.$spacing-lg;
+    border: none;
+    border-radius: var.$border-radius-md;
+    cursor: pointer;
+    font-size: var.$font-size-base;
+    font-weight: var.$font-weight-medium;
+    transition: var.$transition-base;
+
+    &:active {
+        transform: scale(0.98);
+    }
+}
+
+.btn-primary {
+    background: var.$color-primary;
+    color: var.$color-background;
+
+    &:hover {
+        opacity: 0.85;
+    }
+}
+
+.btn-secondary {
+    background: var.$color-border;
+    color: var.$color-text;
+
+    &:hover {
+        background: color.scale(#e0e0e0, $lightness: -10%);
+    }
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+
+    &:hover {
+        background: #c82333;
+    }
+}
+
+.btn-edit {
+    background: #007bff;
+    color: white;
+
+    &:hover {
+        background: #0056b3;
+    }
+}
+
+// ============================================
+// CARDS DE PEDIDOS
+// ============================================
+
+.pedido-card {
+    background: var.$color-background;
+    border: 1px solid var.$color-border;
+    padding: var.$spacing-lg;
+    margin: var.$spacing-sm 0;
+    border-radius: var.$border-radius-md;
+    transition: var.$transition-base;
+
+    &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h3 {
+        margin-bottom: var.$spacing-sm;
+        font-size: var.$font-size-subtitle;
+        font-weight: var.$font-weight-bold;
+    }
+
+    p {
+        margin: var.$spacing-xs 0;
+        font-size: var.$font-size-base;
+        color: var.$color-text;
+
+        strong {
+            font-weight: var.$font-weight-medium;
+        }
+    }
+}
+
+// ============================================
+// ANIMAÇÕES
+// ============================================
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
