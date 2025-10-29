@@ -1,4 +1,4 @@
--- commit: adicionei o banco, concertei o erro do botão sair 
+-- commit: 
 -- lembrete: aviso de segurança do Electron alertando que seu app está 
 configurado de forma que pode ser vulnerável a certos tipos de ataques.
 
@@ -7,8 +7,14 @@ configurado de forma que pode ser vulnerável a certos tipos de ataques.
 * Adicionar uma nova aba no trecho atividades, com o nome "Troca"
     - essa aba deve apresentar uma forma facil de fazer troca entre cilindros 
     de clientes e da empresa. 
-
-
+* Adicionar uma nova aba no trecho atividades, com o nome "Lembretes"
+    - essa aba deve ser uma anotação de lembretes de coisas corriqueiras que 
+    não tem tanta importancia, como por exemplo, enviamos um cilindro para são 
+    joão dos patos e o cara ficou de enviar o clindro pela van depois. Isso 
+    precisa ser lembrado.
+* * Adicionar uma nova aba no trecho informações, com o nome "Estoque"
+    - essa aba deve apresentar a quantidade dos tipos de gases que temos para 
+    vender: Oxigênio, Acetileno, Nitrogênio, Argônio, Mistura, CO², Ar Medicinal.
 
 
 

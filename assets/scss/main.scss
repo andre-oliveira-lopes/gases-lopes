@@ -25,3 +25,10 @@
 // 5. Pages (estilos específicos de páginas)
 @use "pages/home";
 @use "pages/pedidos-especiais"; // Página de Pedidos Especiais
+@import 'pages/tabela-precos'; // Página de Tabela de Preços
+@import 'pages/fornecedor'; // Página de Fornecedor
+@import 'pages/dados-cilindros'; // Página de Dados dos Cilindros
+@import 'pages/dashboard'; // Página de Dashboard
+@import 'pages/nota-emprestimo'; // Página de Nota de Empréstimo
+@import 'pages/nota-entrega'; // Página de Nota de Entrega
+@import 'pages/buscar'; // Página de Buscar

@@ -1,0 +1,95 @@
+// ============================================
+// TABELA DE PREÇOS - Página específica
+// Local: assets/scss/pages/_tabela-precos.scss
+// ============================================
+
+@use '../abstracts/variables' as var;
+
+// Remove padding do content
+.content {
+    padding: 0 !important;
+    overflow-y: auto;
+}
+
+// Header moderno da página
+.page-header-modern {
+    display: flex;
+    align-items: flex-start;
+    gap: var.$spacing-xl;
+    padding: var.$spacing-md var.$spacing-xl;
+    margin-top: -15px;  // Colado no topbar igual pedidos especiais
+    margin-bottom: 0;
+
+    &__main {
+        display: flex;
+        align-items: center;
+        gap: var.$spacing-lg;
+        flex: 0 0 auto;
+    }
+
+    &__icon {
+        width: 64px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+
+    &__title {
+        font-size: 42px;
+        font-weight: var.$font-weight-bold;
+        color: var.$color-text;
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    &__divider {
+        width: 1px;
+        background-color: var.$color-border;
+        align-self: stretch;
+        margin: 0 var.$spacing-md;
+        flex-shrink: 0;
+    }
+
+    &__info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 0;
+    }
+
+    &__label {
+        font-size: var.$font-size-small;
+        font-weight: var.$font-weight-medium;
+        color: var.$color-text;
+        margin-bottom: var.$spacing-xs;
+    }
+
+    &__description {
+        font-size: var.$font-size-base;
+        color: var.$color-text-secondary;
+        line-height: 1.6;
+        margin: 0;
+    }
+}
+
+// Separador horizontal grosso
+.page-separator {
+    height: 3px;
+    background-color: #D0D0D0;
+    margin: 0 var.$spacing-xl var.$spacing-xl var.$spacing-xl;
+    border-radius: 2px;
+}
+
+// Container dos preços
+#precosContainer {
+    padding: 0 var.$spacing-xl var.$spacing-xl var.$spacing-xl;
+}

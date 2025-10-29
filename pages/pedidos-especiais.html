@@ -154,10 +154,31 @@
 
         <!-- Área de Conteúdo Principal -->
         <main class="content">
-          <!-- SUBSTITUA ESTE CONTEÚDO PELO CONTEÚDO ESPECÍFICO DA SUA PÁGINA -->
+            
+            <!-- HEADER DA PÁGINA -->
+            <div class="page-header-modern">
+                <div class="page-header-modern__main">
+                    <div class="page-header-modern__icon">
+                        <img src="../assets/icons/pedidos-especiais-icone.svg" alt="Ícone Pedidos Especiais">
+                    </div>
+                    <h1 class="page-header-modern__title">Pedidos Especiais</h1>
+                </div>
+                
+                <div class="page-header-modern__divider"></div>
+                
+                <div class="page-header-modern__info">
+                    <p class="page-header-modern__label">Explicação:</p>
+                    <p class="page-header-modern__description">Faz a nota de entrega do material sa aqui ......Faz a nota de entrega do material sa aqui ......Faz a nota de entrega do material sa aqui ......Faz a nota de entrega do material sa aqui ......Faz a nota de entrega do material sa aqui ......</p>
+                </div>
+            </div>
 
-          <h1>Pedidos Especiais</h1>
-          <p>Conteúdo da página aqui...</p>
+            <!-- LINHA DIVISÓRIA GROSSA -->
+            <div class="page-separator"></div>
+
+            <!-- CONTEÚDO (Cards de pedidos vão aparecer aqui) -->
+            <div id="pedidosContainer"></div>
+
+        </main>
 
           <!-- FIM DO CONTEÚDO -->
         </main>
@@ -272,17 +293,19 @@
                     
                     console.log(`📋 ${pedidos.length} pedidos encontrados`);
                     
-                    const container = document.querySelector('.content');
+                    const container = document.getElementById('pedidosContainer');
                     
                     if (pedidos.length === 0) {
                         container.innerHTML = `
-                            <h1>Pedidos Especiais</h1>
-                            <p>Nenhum pedido cadastrado ainda.</p>
+                            <div style="text-align: center; padding: 40px; color: #999;">
+                                <p style="font-size: 16px;">📭 Nenhum pedido cadastrado ainda.</p>
+                                <p style="font-size: 14px; margin-top: 10px;">Clique em "Novo Pedido" para começar.</p>
+                            </div>
                         `;
                         return;
                     }
                     
-                    container.innerHTML = '<h1>📋 Pedidos Cadastrados</h1>';
+                    container.innerHTML = ''; // Limpa o container
                     
                     pedidos.forEach(pedido => {
                         const card = document.createElement('div');
