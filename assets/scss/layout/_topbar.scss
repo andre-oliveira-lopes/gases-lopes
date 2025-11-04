@@ -27,8 +27,8 @@
     }
 
     &__menu-btn {
-        width: 36px;            // ← Era 48px, reduzido 25%
-        height: 36px;           // ← Era 48px, reduzido 25%
+        width: var.$button-size-sm;    // ← 36px
+        height: var.$button-size-sm;   // ← 36px
         background-color: var.$color-sidebar-bg;
         border: none;
         border-radius: var.$border-radius-md;
@@ -77,10 +77,10 @@
     }
 
     &__avatar {
-        width: 30px;            // ← Era 40px, reduzido 25%
-        height: 30px;           // ← Era 40px, reduzido 25%
+        width: var.$avatar-size-sm;    // ← 30px
+        height: var.$avatar-size-sm;   // ← 30px
         border-radius: var.$border-radius-full;
-        border: 2px solid var.$color-text;
+        border: var.$border-width-base solid var.$color-text;  // ← 2px
         object-fit: cover;
     }
 

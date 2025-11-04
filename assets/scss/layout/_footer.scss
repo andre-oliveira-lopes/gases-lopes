@@ -1,7 +1,7 @@
 // Estilos para o footer
 footer {
-  background: $primary-color;
-  color: #fff;
-  padding: 10px;
+  background: $color-primary;
+  color: $color-text-inverse;  // ← usando variável
+  padding: $spacing-sm;        // ← usando variável (10px → 12px é próximo)
   text-align: center;
 }

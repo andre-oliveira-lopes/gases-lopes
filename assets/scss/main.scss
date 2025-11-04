@@ -21,6 +21,7 @@
 
 // 4. Components (componentes reutilizáveis)
 @use "components/buttons";
+@use 'components/page-common';
 
 // 5. Pages (estilos específicos de páginas)
 @use "pages/home";

@@ -36,4 +36,9 @@ body {
     overflow-y: auto;
     padding: var.$spacing-xl;
     background-color: var.$color-background;
+    
+    // Modificador para páginas sem padding
+    &--no-padding {
+        padding: 0;
+    }
 }

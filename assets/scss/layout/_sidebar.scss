@@ -41,7 +41,7 @@
     }
 
     &__section-title {
-        font-size: 14px;                    // Aumentado de 12px
+        font-size: var.$font-size-base;  // ← 14px                   
         font-weight: var.$font-weight-bold; // Negrito
         color: var.$color-text;
         margin-bottom: var.$spacing-sm;

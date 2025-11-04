@@ -1,7 +1,7 @@
 // Estilos para o header
 header {
-  background: $primary-color;
-  color: #fff;
-  padding: 20px;
+  background: $color-primary;
+  color: $color-text-inverse;  // ← usando variável
+  padding: $spacing-md;        // ← usando variável (20px → spacing-lg seria 24px, mas 16px é mais próximo)
   text-align: center;
 }

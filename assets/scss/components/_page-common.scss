@@ -1,0 +1,75 @@
+// ============================================ 
+// COMPONENTES COMUNS DE PÁGINAS
+// Local: assets/scss/components/_page-common.scss
+// ============================================
+
+@use '../abstracts/variables' as var;
+
+// ===== SEPARADOR VISUAL =====
+// Linha horizontal entre header e conteúdo
+.page-separator {
+    height: 3px;
+    background-color: var.$color-separator;
+    margin: 0 var.$spacing-xl var.$spacing-xl var.$spacing-xl;
+    border-radius: var.$border-radius-sm;
+}
+
+// ===== HEADER MODERNO =====
+// Cabeçalho padrão das páginas com ícone + título + divider + explicação
+.page-header-modern {
+    display: flex;
+    align-items: center;  // ← Tudo alinhado no centro verticalmente
+    gap: var.$spacing-md;
+    padding: 0 var.$spacing-xl var.$spacing-xs var.$spacing-xl;
+    
+    &__icon {
+        width: var.$icon-size-xl;
+        height: var.$icon-size-xl;
+        flex-shrink: 0;
+        
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+    
+    &__title {
+        font-size: var.$font-size-display;
+        font-weight: var.$font-weight-bold;
+        color: var.$color-text;
+        margin: 0;
+        line-height: var.$line-height-tight;
+        flex-shrink: 0;  // ← Não encolhe
+    }
+    
+    // Separador vertical entre título e explicação
+    &__divider {
+        width: 1px;
+        height: 80px;  // ← Altura do separador vertical
+        background-color: var.$color-border;
+        flex-shrink: 0;
+    }
+    
+    // Container da explicação (label + descrição)
+    &__info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1;  // ← Ocupa o espaço restante
+    }
+    
+    &__label {
+        font-size: var.$font-size-base;
+        font-weight: var.$font-weight-medium;
+        color: var.$color-text;
+        margin: 0;
+    }
+    
+    &__description {
+        font-size: var.$font-size-base;
+        color: var.$color-text-secondary;
+        margin: 0;
+        line-height: var.$line-height-base;
+    }
+}
