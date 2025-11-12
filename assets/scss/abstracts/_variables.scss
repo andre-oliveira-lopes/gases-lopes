@@ -1,13 +1,15 @@
-// ============================================ 
+// ============================================
 // VARIÁVEIS - Cores, Tamanhos, Fontes
 // Local: assets/scss/abstracts/_variables.scss
 // ============================================
-
 // ===== CORES =====
 // Cores principais
 $color-primary: #000000;
 $color-danger: #dc3545;
 $color-info: #007bff;
+$color-success: #28a745; // <-- ADICIONADO: Cor para sucesso
+$color-warning: #ffc107; // <-- ADICIONADO: Cor para aviso
+$color-neutral-gray: #6c757d; // <-- ADICIONADO: Cor para um cinza neutro (usado em botões secundários, por exemplo)
 
 // Cores de texto
 $color-text: #000000;
@@ -16,6 +18,7 @@ $color-text-inverse: #ffffff;
 
 // Cores de fundo
 $color-background: #ffffff;
+$color-background-light: #f8f9fa;
 $color-sidebar-bg: #f5f5f5;
 $color-active-bg: #cccccc;
 $color-hover: #e8e8e8;
@@ -24,22 +27,35 @@ $color-hover: #e8e8e8;
 $color-border: #e0e0e0;
 $color-separator: #D0D0D0;
 
+// Cores para Badges (novas, mais claras)
+$badge-warning-bg: #fff3cd; // <-- ADICIONADO
+$badge-warning-text: #856404; // <-- ADICIONADO
+$badge-success-bg: #d4edda; // <-- ADICIONADO
+$badge-success-text: #155724; // <-- ADICIONADO
+$badge-info-bg: #d1ecf1; // <-- ADICIONADO
+$badge-info-text: #0c5460; // <-- ADICIONADO
+$badge-danger-bg: #f8d7da; // <-- ADICIONADO
+$badge-danger-text: #721c24; // <-- ADICIONADO
+
 // ===== TIPOGRAFIA =====
 $font-main: "Arial", sans-serif;
-
 $font-size-base: 14px;
 $font-size-small: 12px;
 $font-size-subtitle: 16px;
 $font-size-lg: 1.125rem;
 $font-size-title: 32px;
 $font-size-display: 42px;
-
 $font-weight-normal: 400;
 $font-weight-medium: 500;
 $font-weight-bold: 700;
-
 $line-height-tight: 1.3;
 $line-height-base: 1.6;
+$font-size-h1: 36px; // Tamanho para h1
+$font-size-h2: 28px; // <--- ADICIONE ESTA LINHA (Tamanho para h2, usado para o t\u00edtulo da mensagem)
+$font-size-h3: 22px; // Tamanho para h3
+$font-size-h4: 18px; // Tamanho para h4
+$font-size-h5: 16px; // Tamanho para h5
+$font-size-h6: 14px; // Tamanho para h6
 
 // ===== ESPAÇAMENTOS =====
 $spacing-xs: 8px;
@@ -59,15 +75,12 @@ $icon-size-sm: 24px;
 $icon-size-md: 32px;
 $icon-size-lg: 48px;
 $icon-size-xl: 64px;
-
 // Botões
 $button-size-sm: 36px;
 $button-size-md: 48px;
-
 // Avatares
 $avatar-size-sm: 30px;
 $avatar-size-md: 40px;
-
 // Modais
 $modal-width-sm: 400px;
 $modal-width-md: 600px;
@@ -78,7 +91,6 @@ $modal-sidebar-width: 250px;
 $border-width-thin: 1px;
 $border-width-base: 2px;
 $border-width-thick: 3px;
-
 $border-radius-sm: 4px;
 $border-radius-md: 8px;
 $border-radius-lg: 12px;
@@ -87,3 +99,9 @@ $border-radius-full: 50%;
 // ===== TRANSIÇÕES =====
 $transition-base: all 0.3s ease;
 $transition-fast: all 0.15s ease;
+
+// Larguras de Modal
+$modal-width-sm: 400px;
+$modal-width-md: 600px;
+$modal-width-lg: 900px; // <--- ADICIONE ESTA LINHA
+$modal-width-xl: 1200px; // Opcional, para modais muito grandes

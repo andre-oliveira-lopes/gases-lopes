@@ -1,320 +1,193 @@
 // ============================================
-// PEDIDOS ESPECIAIS - Página específica
+// Estilos para a página de Pedidos Especiais
 // Local: assets/scss/pages/_pedidos-especiais.scss
 // ============================================
+@use '../abstracts/variables' as var; // Importa as variáveis
+@use '../components/cards'; // Adicione esta linha para importar os estilos de cards
 
-// 1. Importa as variáveis, permitindo o uso com o prefixo 'var.'
-@use '../abstracts/variables' as var;
-// 2. Importa o módulo de cores do Sass para manipulação de cores
-@use "sass:color";
-
-.app-container {
-    display: flex;
-    width: 100%;
-    height: 100vh;
-    background-color: var.$color-background; // <-- CORRIGIDO
+// Container para os cards de pedidos
+.pedidos-container {
+  padding: 0 var.$spacing-lg; // Espaçamento lateral para os cards
+  display: grid; // Usando grid para melhor organização dos cards
+  gap: var.$spacing-md; // Espaçamento entre os cards
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); // Cards responsivos
 }
 
-.main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    overflow: hidden;
-}
+// Estilo específico para o card de cada pedido
+.pedido-card {
+  @extend .card; // Herda os estilos base do .card
+  border: 1px solid var.$color-border; // Adiciona uma borda sutil
+  margin-bottom: var.$spacing-md; // Espaçamento entre os cards (se não usar grid)
 
-.page-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: var.$spacing-xl; // <-- CORRIGIDO
-}
+  h3 {
+    margin-top: 0;
+    color: var.$color-text;
+    font-size: var.$font-size-subtitle; // Usando a variável de subtítulo
+    border-bottom: 1px solid var.$color-border;
+    padding-bottom: var.$spacing-sm;
+    margin-bottom: var.$spacing-md;
+  }
 
-.page-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: var.$spacing-lg; // <-- CORRIGIDO
-
-    &__left {
-        display: flex;
-        align-items: center;
-        gap: var.$spacing-lg; // <-- CORRIGIDO
-    }
-
-    &__icon {
-        width: 90px;
-        height: 90px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-
-        svg {
-            width: 100%;
-            height: 100%;
-        }
-    }
-
-    &__title {
-        font-size: var.$font-size-title; // <-- CORRIGIDO
-        font-weight: var.$font-weight-bold; // <-- CORRIGIDO
-        color: var.$color-text; // <-- CORRIGIDO
-    }
-
-    &__info {
-        max-width: 400px;
-    }
-
-    &__label {
-        font-size: var.$font-size-small; // <-- CORRIGIDO
-        font-weight: var.$font-weight-medium; // <-- CORRIGIDO
-        color: var.$color-text; // <-- CORRIGIDO
-        margin-bottom: var.$spacing-xs; // <-- CORRIGIDO
-    }
-
-    &__description {
-        font-size: var.$font-size-small; // <-- CORRIGIDO
-        color: var.$color-text-secondary; // <-- CORRIGIDO
-        line-height: 1.6;
-    }
-}
-
-.page-divider {
-    border: none;
-    border-top: 2px solid var.$color-border; // <-- CORRIGIDO
-    margin: 0 0 var.$spacing-xl 0; // <-- CORRIGIDO
-}
-
-.content-area {
-    // Espaço para o conteúdo específico da página
-    min-height: 400px;
-}
-
-// ============================================
-// CONTAINER DOS PEDIDOS
-// ============================================
-
-#pedidosContainer {
-    padding: 0 var.$spacing-xl var.$spacing-xl var.$spacing-xl;
-}
-
-// ============================================
-// MODAL DE EDIÇÃO
-// ============================================
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 10000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    animation: fadeIn 0.3s;
-
-    &.show {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-}
-
-.modal-content {
-    background-color: var.$color-background;
-    padding: var.$spacing-xl;
-    border-radius: var.$border-radius-lg;
-    width: 90%;
-    max-width: 600px;
-    max-height: 90vh;
-    overflow-y: auto;
-    animation: slideDown 0.3s;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var.$spacing-lg;
-    padding-bottom: var.$spacing-md;
-    border-bottom: 2px solid var.$color-border;
-
-    h2 {
-        margin: 0;
-        font-size: var.$font-size-title;
-        font-weight: var.$font-weight-bold;
-    }
-}
-
-.close-btn {
-    background: none;
-    border: none;
-    font-size: 28px;
-    cursor: pointer;
+  p {
+    margin: var.$spacing-xs 0; // Pequeno espaçamento vertical para parágrafos
     color: var.$color-text-secondary;
-    padding: 0;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var.$transition-base;
+    font-size: var.$font-size-base;
+  }
 
-    &:hover {
-        color: var.$color-text;
-    }
+  strong {
+    color: var.$color-text;
+  }
+
+  .card-timestamp {
+    font-size: var.$font-size-small; // Tamanho de fonte menor para timestamps
+    color: var.$color-text-secondary;
+    margin-top: var.$spacing-md;
+    border-top: 1px solid var.$color-border;
+    padding-top: var.$spacing-sm;
+  }
+
+  .card-actions {
+    margin-top: var.$spacing-md;
+    display: flex;
+    gap: var.$spacing-xs; // Espaçamento entre os botões de ação
+  }
 }
 
-.form-group {
-    margin-bottom: var.$spacing-lg;
+// Estilo para o estado vazio (quando não há pedidos)
+.empty-state {
+  text-align: center;
+  padding: var.$spacing-xl;
+  color: var.$color-text-secondary;
 
-    label {
-        display: block;
-        margin-bottom: var.$spacing-xs;
-        font-weight: var.$font-weight-medium;
-        color: var.$color-text;
-        font-size: var.$font-size-base;
-    }
+  p {
+    font-size: var.$font-size-base;
+    margin-bottom: var.$spacing-sm;
+  }
+  p:last-child {
+    font-size: var.$font-size-small;
+    margin-top: var.$spacing-sm;
+  }
+}
 
-    input,
-    select,
-    textarea {
-        width: 100%;
+// Estilos para os badges de status
+.badge {
+  padding: 4px var.$spacing-sm; // Padding menor para badges
+  border-radius: var.$border-radius-lg; // Borda mais arredondada para badges
+  font-size: var.$font-size-small;
+  display: inline-block;
+  font-weight: var.$font-weight-medium;
+}
+
+.badge-warning {
+  background: var.$badge-warning-bg;
+  color: var.$badge-warning-text;
+}
+
+.badge-success {
+  background: var.$badge-success-bg;
+  color: var.$badge-success-text;
+}
+
+.badge-info {
+  background: var.$badge-info-bg;
+  color: var.$badge-info-text;
+}
+
+.badge-danger {
+  background: var.$badge-danger-bg;
+  color: var.$badge-danger-text;
+}
+
+// ============================================
+// Estilos para a barra de ações (busca e novo pedido)
+// ============================================
+// assets/scss/pages/_pedidos-especiais.scss
+
+.page-actions-bar {
+    display: flex;
+    // justify-content: space-between; // <--- COMENTE OU REMOVA ESTA LINHA
+    align-items: center;
+    padding: var.$spacing-md var.$spacing-lg; // Mantém o padding
+    background-color: var.$color-background;
+    // border-bottom: none; // Já removemos esta linha antes
+    border-radius: var.$border-radius-md;
+    // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); // Já removemos esta linha antes
+    margin-bottom: var.$spacing-lg; // Espaçamento abaixo da barra de ações
+}
+
+.search-input-group {
+    display: flex;
+    align-items: center;
+    gap: var.$spacing-sm; // Este gap já vai espaçar o input, o botão Buscar e o botão Novo Pedido
+    flex-grow: 1; // Pode remover se não quiser que ele ocupe todo o espaço
+    max-width: 600px; // Pode ajustar ou remover
+}
+
+
+    .form-control { // Estilo para o input de busca
+        flex-grow: 1;
         padding: var.$spacing-sm;
         border: 1px solid var.$color-border;
         border-radius: var.$border-radius-sm;
         font-size: var.$font-size-base;
-        font-family: inherit;
-        transition: var.$transition-base;
-
+        color: var.$color-text;
+        background-color: var.$color-background;
+        box-sizing: border-box; // Inclui padding e borda na largura total
         &:focus {
             outline: none;
-            border-color: var.$color-text;
+            border-color: var.$color-info;
+            box-shadow: 0 0 0 2px rgba(var.$color-info, 0.2);
         }
     }
 
-    textarea {
-        resize: vertical;
+    #newPedidoBtn {
+        margin-left: var.$spacing-md; // Espaçamento entre a busca e o botão Novo Pedido
+        white-space: nowrap; // Evita que o texto do botão quebre em linhas
     }
-}
 
-.form-actions {
-    display: flex;
-    gap: var.$spacing-sm;
-    justify-content: flex-end;
-    margin-top: var.$spacing-xl;
-    padding-top: var.$spacing-lg;
-    border-top: 1px solid var.$color-border;
-}
+    .btn-icon {
+        width: var.$icon-size-xs; // Usar um tamanho menor para ícones em botões
+        height: var.$icon-size-xs;
+        margin-right: var.$spacing-xs / 2; // Pequeno espaçamento entre ícone e texto
+    }
+
 
 // ============================================
-// BOTÕES
+// ESTILOS PARA CENTRALIZAÇÃO DA MENSAGEM DE ESTADO VAZIO
 // ============================================
 
-.btn {
-    padding: var.$spacing-sm var.$spacing-lg;
-    border: none;
-    border-radius: var.$border-radius-md;
-    cursor: pointer;
-    font-size: var.$font-size-base;
-    font-weight: var.$font-weight-medium;
-    transition: var.$transition-base;
-
-    &:active {
-        transform: scale(0.98);
-    }
+// Estilo para o contêiner pai (onde a mensagem é inserida)
+#pedidosContainer {
+    display: flex; // Ativa Flexbox
+    justify-content: center; // Centraliza horizontalmente
+    align-items: center; // Centraliza verticalmente
+    min-height: 60vh; // Altura mínima de 60% da viewport (ajuste se quiser mais/menos)
+    padding: var.$spacing-lg; // Padding para não colar nas bordas da tela
+    flex-direction: column; // Alinha os itens em coluna (para o h3 e p's ficarem um abaixo do outro)
 }
 
-.btn-primary {
-    background: var.$color-primary;
-    color: var.$color-background;
-
-    &:hover {
-        opacity: 0.85;
-    }
-}
-
-.btn-secondary {
-    background: var.$color-border;
-    color: var.$color-text;
-
-    &:hover {
-        background: color.scale(#e0e0e0, $lightness: -10%);
-    }
-}
-
-.btn-danger {
-    background: #dc3545;
-    color: white;
-
-    &:hover {
-        background: #c82333;
-    }
-}
-
-.btn-edit {
-    background: #007bff;
-    color: white;
-
-    &:hover {
-        background: #0056b3;
-    }
-}
-
-// ============================================
-// CARDS DE PEDIDOS
-// ============================================
-
-.pedido-card {
-    background: var.$color-background;
-    border: 1px solid var.$color-border;
-    padding: var.$spacing-lg;
-    margin: var.$spacing-sm 0;
-    border-radius: var.$border-radius-md;
-    transition: var.$transition-base;
-
-    &:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
+// Estilos para a mensagem de "nenhum pedido"
+.no-pedidos-message {
+    text-align: center; // Centraliza o texto dentro da mensagem
+    max-width: 500px; // Limita a largura para não ficar muito larga em telas grandes
+    padding: var.$spacing-lg; // Padding interno para "respirar"
+    background-color: var.$color-background-light; // Fundo leve (opcional, para destacar)
+    border-radius: var.$border-radius-md; // Bordas arredondadas (opcional)
+    color: var.$color-text-secondary; // Cor mais suave para a mensagem
+    font-size: var.$font-size-base; // Tamanho da fonte
 
     h3 {
-        margin-bottom: var.$spacing-sm;
-        font-size: var.$font-size-subtitle;
-        font-weight: var.$font-weight-bold;
+        margin-bottom: var.$spacing-md; // Espaçamento abaixo do título
+        color: var.$color-text; // Cor mais forte para o título
+        font-size: var.$font-size-h4; // Tamanho maior para o h3 (ajuste se necessário)
     }
 
     p {
-        margin: var.$spacing-xs 0;
-        font-size: var.$font-size-base;
-        color: var.$color-text;
+        margin-bottom: var.$spacing-md; // Espaçamento entre os parágrafos
+        line-height: 1.6; // Espaçamento entre linhas para melhor leitura
 
-        strong {
-            font-weight: var.$font-weight-medium;
+        &:last-child {
+            margin-bottom: 0; // Sem margem no último parágrafo
         }
-    }
-}
-
-// ============================================
-// ANIMAÇÕES
-// ============================================
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes slideDown {
-    from {
-        transform: translateY(-50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
     }
 }

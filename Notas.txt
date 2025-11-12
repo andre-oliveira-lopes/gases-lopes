@@ -2,7 +2,7 @@
 -- lembrete: aviso de segurança do Electron alertando que seu app está 
 configurado de forma que pode ser vulnerável a certos tipos de ataques.
 
-
+✅🔄 ❌🔍🗑️✏️📋✅🚀➕ 
 ----------> feature" (funcionalidade)
 * Adicionar uma nova aba no trecho atividades, com o nome "Troca"
     - essa aba deve apresentar uma forma facil de fazer troca entre cilindros 

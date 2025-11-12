@@ -7,9 +7,11 @@
 console.log('--- Verificacao de Versao ---');
 console.log('Versao do Node.js executando este processo:', process.version);
 console.log('NODE_MODULE_VERSION do processo:', process.versions.modules);
+console.log('\n');
 
 // Importa os módulos principais do Electron
 const { app, BrowserWindow, ipcMain } = require("electron");
+const path = require('path');
 
 // ============================================
 // INICIALIZAÇÃO DO BANCO DE DADOS
@@ -18,8 +20,7 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 require('./database/migrations/init');
 
 // Importa os models
-const pedidosModel = require('./database/models/pedidos');
-const fornecedoresModel = require('./database/models/fornecedores');
+const pedidosModel = require('./database/models/pedidos-especiais');
 
 // ============================================
 // CONFIGURAÇÃO DA JANELA
@@ -152,80 +153,6 @@ ipcMain.handle('pedidos:buscarTexto', async (event, termo) => {
   }
 });
 
-// -------- FORNECEDORES --------
-
-// Listar todos os fornecedores
-ipcMain.handle('fornecedores:listar', async () => {
-  try {
-    const fornecedores = fornecedoresModel.listarFornecedores();
-    console.log(`📋 Listados ${fornecedores.length} fornecedores`);
-    return fornecedores;
-  } catch (error) {
-    console.error('❌ Erro ao listar fornecedores:', error);
-    throw error;
-  }
-});
-
-// Criar novo fornecedor
-ipcMain.handle('fornecedores:criar', async (event, fornecedor) => {
-  try {
-    const id = fornecedoresModel.criarFornecedor(fornecedor);
-    console.log(`✅ Fornecedor criado com ID: ${id}`);
-    return { success: true, id };
-  } catch (error) {
-    console.error('❌ Erro ao criar fornecedor:', error);
-    throw error;
-  }
-});
-
-// Buscar fornecedor por ID
-ipcMain.handle('fornecedores:buscar', async (event, id) => {
-  try {
-    const fornecedor = fornecedoresModel.buscarFornecedorPorId(id);
-    console.log(`🔍 Fornecedor encontrado: ${fornecedor ? fornecedor.nome : 'Não encontrado'}`);
-    return fornecedor;
-  } catch (error) {
-    console.error('❌ Erro ao buscar fornecedor:', error);
-    throw error;
-  }
-});
-
-// Atualizar fornecedor
-ipcMain.handle('fornecedores:atualizar', async (event, id, dados) => {
-  try {
-    fornecedoresModel.atualizarFornecedor(id, dados);
-    console.log(`✏️ Fornecedor ${id} atualizado`);
-    return { success: true };
-  } catch (error) {
-    console.error('❌ Erro ao atualizar fornecedor:', error);
-    throw error;
-  }
-});
-
-// Deletar fornecedor
-ipcMain.handle('fornecedores:deletar', async (event, id) => {
-  try {
-    fornecedoresModel.deletarFornecedor(id);
-    console.log(`🗑️ Fornecedor ${id} deletado`);
-    return { success: true };
-  } catch (error) {
-    console.error('❌ Erro ao deletar fornecedor:', error);
-    throw error;
-  }
-});
-
-// Buscar fornecedores por texto
-ipcMain.handle('fornecedores:buscarTexto', async (event, termo) => {
-  try {
-    const fornecedores = fornecedoresModel.buscarFornecedores(termo);
-    console.log(`🔍 Encontrados ${fornecedores.length} fornecedores com "${termo}"`);
-    return fornecedores;
-  } catch (error) {
-    console.error('❌ Erro ao buscar fornecedores:', error);
-    throw error;
-  }
-});
-
 // -------- FECHAR JANELA --------
 ipcMain.handle('app:fechar', () => {
   app.quit();
@@ -238,7 +165,7 @@ ipcMain.handle('app:fechar', () => {
 // Cria a janela quando o app estiver pronto
 app.whenReady().then(() => {
   createWindow();
-  console.log('🚀 App iniciado com sucesso!');
+  console.log('\nApp iniciado com sucesso!\n');
 });
 
 // Encerra o app quando todas as janelas forem fechadas (exceto no macOS)

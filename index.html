@@ -1,3 +1,7 @@
+<!-- ============================================ -->
+<!-- INDEX.HTML - Página Principal da Aplicação -->
+<!-- Local: index.html -->
+<!-- ============================================ -->
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
@@ -24,10 +28,8 @@
             <span></span>
             <span></span>
           </button>
-
           <!-- Botão Sair -->
           <button class="topbar__exit-btn">Sair</button>
-
           <!-- Usuário -->
           <div class="topbar__user" id="userMenu">
             <img
@@ -45,7 +47,6 @@
                 />
               </svg>
             </button>
-
             <!-- Dropdown do Usuário -->
             <div class="topbar__user-dropdown" id="userDropdown">
               <div class="topbar__dropdown-item">Trocar Imagem</div>
@@ -55,7 +56,6 @@
           </div>
         </div>
       </header>
-
       <!-- Container do conteúdo (Sidebar + Conteúdo) -->
       <div class="main-content">
         <!-- Sidebar -->
@@ -64,7 +64,6 @@
           <div class="sidebar__header">
             <h1 class="sidebar__title">Gases União app</h1>
           </div>
-
           <!-- Menu de Atividades -->
           <nav class="sidebar__nav">
             <h2 class="sidebar__section-title">Atividades</h2>
@@ -130,7 +129,6 @@
                 </a>
               </li>
             </ul>
-
             <!-- Menu de Informações -->
             <h2 class="sidebar__section-title">Informações</h2>
             <ul class="sidebar__menu">
@@ -167,52 +165,44 @@
             </ul>
           </nav>
         </aside>
-
         <!-- Área de Conteúdo Principal -->
         <main class="content content--no-padding">
-            <!-- HEADER DA PÁGINA -->
-            <div class="page-header-modern">
-                <!-- Ícone -->
-                <div class="page-header-modern__icon">
-                    <img src="assets/icons/inicio.svg" alt="Ícone Início">
-                </div>
-                
-                <!-- Título -->
-                <h1 class="page-header-modern__title">Bem-vindo</h1>
-                
-                <!-- Separador vertical -->
-                <div class="page-header-modern__divider"></div>
-                
-                <!-- Explicação -->
-                <div class="page-header-modern__info">
-                    <p class="page-header-modern__label">Explicação:</p>
-                    <p class="page-header-modern__description">
-                        Acesse rapidamente as principais funcionalidades do sistema
-                    </p>
-                </div>
+          <!-- HEADER DA PÁGINA -->
+          <div class="page-header-modern">
+            <!-- Ícone -->
+            <div class="page-header-modern__icon">
+              <img src="assets/icons/inicio.svg" alt="Ícone Início">
             </div>
-            
-            <!-- LINHA DIVISÓRIA GROSSA -->
-            <div class="page-separator"></div>
-            
-            <!-- CONTEÚDO DA HOME -->
-            <div id="homeContainer">
-                <p style="text-align: center; padding: 40px; color: #999;">
-                    Conteúdo da página inicial em breve...
-                </p>
+            <!-- Título -->
+            <h1 class="page-header-modern__title">Bem-vindo</h1>
+            <!-- Separador vertical -->
+            <div class="page-header-modern__divider"></div>
+            <!-- Explicação -->
+            <div class="page-header-modern__info">
+              <p class="page-header-modern__label">Explicação:</p>
+              <p class="page-header-modern__description">
+                Acesse rapidamente as principais funcionalidades do sistema
+              </p>
             </div>
+          </div>
+          <!-- LINHA DIVISÓRIA GROSSA -->
+          <div class="page-separator"></div>
+          <!-- CONTEÚDO DA HOME -->
+          <div id="homeContainer">
+            <p style="text-align: center; padding: 40px; color: #999;">
+              Conteúdo da página inicial em breve...
+            </p>
+          </div>
         </main>
         <!-- FIM DO CONTEÚDO -->
       </div>
     </div>
-
     <!-- Modal de Configurações -->
     <div class="settings-modal" id="settingsModal">
       <div class="settings-modal__content">
         <button class="settings-modal__close" id="closeSettings">
           &times;
         </button>
-
         <aside class="settings-modal__sidebar">
           <h3 style="margin-bottom: 1rem">Configurações</h3>
           <div class="settings-modal__menu-item active" data-page="aparencia">
@@ -228,7 +218,6 @@
             Sobre
           </div>
         </aside>
-
         <div class="settings-modal__body" id="settingsBody">
           <!-- O conteúdo será carregado aqui dinamicamente -->
           <div class="settings-loading">
@@ -237,7 +226,6 @@
         </div>
       </div>
     </div>
-
     <script src="assets/js/navigation.js"></script>
     <script src="assets/js/topbar.js"></script>
   </body>

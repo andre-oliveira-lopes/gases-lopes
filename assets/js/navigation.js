@@ -1,15 +1,12 @@
-// ============================================
+// ============================================ 
 // NAVIGATION - Sistema de navegação
 // Local: assets/js/navigation.js
 // ============================================
-
 document.addEventListener('DOMContentLoaded', () => {
     // Marca o item ativo no menu baseado na URL atual
     highlightActiveMenuItem();
-
     // Adiciona evento ao botão de sair
     setupExitButton();
-
     // Adiciona suavização na navegação (opcional)
     setupSmoothNavigation();
 });
@@ -20,20 +17,18 @@ document.addEventListener('DOMContentLoaded', () => {
 function highlightActiveMenuItem() {
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     const menuItems = document.querySelectorAll('.sidebar__menu-item');
-
     menuItems.forEach(item => {
         const link = item.querySelector('.sidebar__link');
         if (link) {
             const href = link.getAttribute('href');
             const linkPage = href.split('/').pop();
-
             // Remove classe ativa de todos
             item.classList.remove('sidebar__menu-item--active');
-
             // Adiciona classe ativa ao item correspondente
-            if (linkPage === currentPage || 
-                (currentPage === '' && linkPage === 'index.html') ||
-                (currentPage === 'index.html' && linkPage === 'index.html')) {
+            // A condição foi simplificada para ser mais direta e evitar erros de parser.
+            // Ela verifica se a página do link corresponde à página atual,
+            // ou se é a página inicial (index.html) e a URL atual está vazia (também indicando a página inicial).
+            if (linkPage === currentPage || (linkPage === 'index.html' && currentPage === '')) { 
                 item.classList.add('sidebar__menu-item--active');
             }
         }
@@ -45,7 +40,6 @@ function highlightActiveMenuItem() {
  */
 function setupExitButton() {
     const exitBtn = document.querySelector('.topbar__exit-btn');
-    
     if (exitBtn) {
         exitBtn.addEventListener('click', async () => {
             if (confirm('Deseja realmente sair?')) {
@@ -66,7 +60,6 @@ function setupExitButton() {
  */
 function setupSmoothNavigation() {
     const links = document.querySelectorAll('.sidebar__link, .quick-card');
-    
     links.forEach(link => {
         link.addEventListener('click', (e) => {
             // Adiciona classe de loading se quiser

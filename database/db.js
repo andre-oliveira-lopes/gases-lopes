@@ -23,8 +23,7 @@ const db = new Database(DB_PATH, {
 
 // Habilita foreign keys
 db.pragma('foreign_keys = ON');
-
-console.log('✅ Banco de dados conectado:', DB_PATH);
+console.log('Banco de dados conectado:', DB_PATH);
 
 // Exporta a instância do banco
 module.exports = db;

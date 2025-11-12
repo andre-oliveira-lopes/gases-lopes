@@ -21,15 +21,17 @@
 
 // 4. Components (componentes reutilizáveis)
 @use "components/buttons";
+@use 'components/cards'; // <-- ADICIONADO: Importa os estilos base de cards
+@use 'components/modals'; // <-- ADICIONADO: Importa os estilos dos modais
 @use 'components/page-common';
 
 // 5. Pages (estilos específicos de páginas)
 @use "pages/home";
 @use "pages/pedidos-especiais"; // Página de Pedidos Especiais
-@import 'pages/tabela-precos'; // Página de Tabela de Preços
-@import 'pages/fornecedor'; // Página de Fornecedor
-@import 'pages/dados-cilindros'; // Página de Dados dos Cilindros
-@import 'pages/dashboard'; // Página de Dashboard
-@import 'pages/nota-emprestimo'; // Página de Nota de Empréstimo
-@import 'pages/nota-entrega'; // Página de Nota de Entrega
-@import 'pages/buscar'; // Página de Buscar
+@use 'pages/tabela-precos'; // Página de Tabela de Preços
+@use 'pages/fornecedor'; // Página de Fornecedor
+@use 'pages/dados-cilindros'; // Página de Dados dos Cilindros
+@use 'pages/dashboard'; // Página de Dashboard
+@use 'pages/nota-emprestimo'; // Página de Nota de Empréstimo
+@use 'pages/nota-entrega'; // Página de Nota de Entrega
+@use 'pages/buscar'; // Página de Buscar

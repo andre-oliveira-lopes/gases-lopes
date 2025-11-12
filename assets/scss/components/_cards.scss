@@ -1,7 +1,12 @@
+// ============================================
 // Estilos para cards
-.card {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+// Local: assets/scss/components/_cards.scss
+// ============================================
+@use '../abstracts/variables' as var; // Importa as variáveis
+
+.card { // Classe base para todos os cards
+  background: var.$color-background; // Fundo branco padrão
+  border-radius: var.$border-radius-md; // Raio de borda médio
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); // Sombra suave
+  padding: var.$spacing-lg; // Espaçamento interno padrão
 }

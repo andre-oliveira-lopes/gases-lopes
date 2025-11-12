@@ -1,0 +1,152 @@
+// ============================================
+// Estilos para Modais
+// Local: assets/scss/components/_modals.scss
+// ============================================
+@use '../abstracts/variables' as var;
+
+.modal {
+    display: none; // Escondido por padrão
+    position: fixed; // Fica por cima de tudo
+    z-index: 1000; // Z-index alto para garantir que fique visível
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; // Habilita scroll se o conteúdo for muito grande
+    background-color: rgba(0, 0, 0, 0.6); // Fundo escuro semi-transparente
+    display: flex; // Usamos flex para centralizar o conteúdo
+    justify-content: center;
+    align-items: center;
+    opacity: 0; // Começa invisível para a animação
+    visibility: hidden; // Esconde completamente
+    transition: opacity var.$transition-base, visibility var.$transition-base; // Transição suave
+}
+
+.modal.show {
+    opacity: 1; // Fica visível
+    visibility: visible; // Mostra o modal
+}
+
+.modal-content {
+    background-color: var.$color-background; // Fundo branco
+    margin: auto; // Centraliza o modal
+    padding: var.$spacing-xl; // Padding interno
+    border-radius: var.$border-radius-md; // Borda arredondada
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); // Sombra
+    width: 90%; // Largura responsiva
+    max-width: var.$modal-width-lg; // <--- AGORA USANDO A NOVA VARIÁVEL DE LARGURA
+    position: relative;
+    transform: translateY(-20px); // Começa um pouco acima para a animação
+    transition: transform var.$transition-base; // Transição suave
+}
+
+.modal.show .modal-content {
+    transform: translateY(0); // Move para a posição final
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var.$color-border; // Borda inferior
+    padding-bottom: var.$spacing-md;
+    margin-bottom: var.$spacing-lg;
+
+    h2 {
+        margin: 0;
+        font-size: var.$font-size-lg; // Tamanho de fonte para o título do modal
+        color: var.$color-text;
+    }
+
+    .close-btn {
+        color: var.$color-text-secondary; // Cor do ícone de fechar
+        font-size: var.$font-size-lg; // Tamanho do ícone
+        font-weight: var.$font-weight-bold;
+        cursor: pointer;
+        border: none;
+        background: none;
+        padding: 0;
+        transition: color var.$transition-fast;
+
+        &:hover,
+        &:focus {
+            color: var.$color-primary; // Escurece no hover
+        }
+    }
+}
+
+// ============================================
+// NOVOS ESTILOS PARA O LAYOUT HORIZONTAL DO FORMULÁRIO
+// ============================================
+.form-row {
+    display: flex;
+    flex-wrap: wrap; // Permite que os itens quebrem para a próxima linha em telas menores
+    gap: var.$spacing-md; // Espaçamento entre os grupos de formulário
+    margin-bottom: var.$spacing-md; // Espaçamento entre as linhas de formulário
+
+    // Estilo padrão para 2 colunas
+    .form-group {
+        flex: 1 1 calc(50% - (var.$spacing-md / 2)); // Ocupa cerca de metade da largura, considerando o gap
+        min-width: 250px; // Garante que o campo não fique muito pequeno
+    }
+
+    // Modificador para 3 colunas
+    &--three-cols {
+        .form-group {
+            flex: 1 1 calc(33.333% - (var.$spacing-md * 2 / 3)); // Ocupa cerca de um terço da largura
+            min-width: 180px; // Ajuste o min-width para 3 colunas
+        }
+    }
+
+    // Garante que o textarea de observações ocupe a largura total
+    // Esta regra é mais específica para o último form-group de uma linha,
+    // mas o HTML já garante que o campo de observações está em seu próprio form-group
+    // fora de um form-row, então esta regra pode ser mais genérica ou removida se não for necessária.
+    // Deixei aqui como exemplo, mas o .form-group abaixo já cobre o textarea.
+}
+
+.form-group {
+    margin-bottom: var.$spacing-md; // Espaçamento entre grupos de formulário
+
+    label {
+        display: block;
+        margin-bottom: var.$spacing-xs / 2; // Pequeno espaçamento entre label e input
+        font-weight: var.$font-weight-medium;
+        color: var.$color-text;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea {
+        width: 100%; // Ocupa 100% da largura disponível
+        padding: var.$spacing-sm;
+        border: 1px solid var.$color-border;
+        border-radius: var.$border-radius-sm;
+        font-size: var.$font-size-base;
+        box-sizing: border-box; // Inclui padding e borda na largura
+        color: var.$color-text;
+        background-color: var.$color-background;
+
+        &:focus {
+            outline: none;
+            border-color: var.$color-info; // Destaca a borda no foco
+            box-shadow: 0 0 0 2px rgba(var.$color-info, 0.2); // Sombra suave no foco
+        }
+    }
+
+    textarea {
+        resize: vertical; // Permite redimensionar verticalmente
+        min-height: 80px; // Altura mínima para textareas
+    }
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var.$spacing-sm; // Espaçamento entre os botões de ação
+    margin-top: var.$spacing-lg;
+    padding-top: var.$spacing-md; // Adicionado padding-top para separar da última linha de campos
+    border-top: 1px solid var.$color-border; // Adicionado borda superior para separar dos campos
+}
