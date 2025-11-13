@@ -158,16 +158,18 @@
 
 // Estilo para o contêiner pai (onde a mensagem é inserida)
 #pedidosContainer {
-    display: flex; // Ativa Flexbox
-    justify-content: center; // Centraliza horizontalmente
-    align-items: center; // Centraliza verticalmente
-    min-height: 60vh; // Altura mínima de 60% da viewport (ajuste se quiser mais/menos)
-    padding: var.$spacing-lg; // Padding para não colar nas bordas da tela
-    flex-direction: column; // Alinha os itens em coluna (para o h3 e p's ficarem um abaixo do outro)
+    display: flex; // Transforma o contêiner em um Flex Container
+    flex-wrap: wrap; // Permite que os cards quebrem para a próxima linha se não houver espaço
+    gap: var.$spacing-lg; // Adiciona espaçamento entre os cards (horizontal e vertical)
+    justify-content: center; // Centraliza os cards horizontalmente se não preencherem a linha toda
+    align-items: flex-start; // Alinha os cards ao topo do contêiner (se houver espaço vertical)
+    min-height: 60vh; // Garante uma altura mínima para o contêiner, útil para centralizar a mensagem de "estado vazio"
+    padding: var.$spacing-lg; // Adiciona um padding interno ao contêiner
+    // Se você tinha 'flex-direction: column;' aqui para o empty state, remova-o.
 }
 
 // Estilos para a mensagem de "nenhum pedido"
-.no-pedidos-message {
+.no-pedidos-message { 
     text-align: center; // Centraliza o texto dentro da mensagem
     max-width: 500px; // Limita a largura para não ficar muito larga em telas grandes
     padding: var.$spacing-lg; // Padding interno para "respirar"

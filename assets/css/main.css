@@ -841,11 +841,12 @@ body {
 
 #pedidosContainer {
   display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   min-height: 60vh;
   padding: 24px;
-  flex-direction: column;
 }
 
 .no-pedidos-message {

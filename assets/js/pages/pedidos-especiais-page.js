@@ -173,15 +173,30 @@ function renderizarPedidos(pedidos) {
 function criarCardPedido(pedido) {
     // Mapeia os campos do banco para exibição
     const nomeCliente = pedido.nome_pessoa || 'Cliente não identificado';
-    const statusBadge = formatarStatus(pedido.status_pagamento || 'Pendente'); // Use status_pagamento
+    const statusBadge = formatarStatus(pedido.status_pagamento || 'Pendente');
     const valorFormatado = formatarDinheiro(pedido.valor_total || 0);
     const dataRecebimento = formatarData(pedido.data_recebimento);
     const tipoGas = pedido.tipo_gas || 'Não especificado';
 
+    // Lógica para truncar as observações (já implementada)
+    let observacoesParaExibir = '';
+    if (pedido.observacoes) {
+        const limiteCaracteres = 30;
+        if (pedido.observacoes.length > limiteCaracteres) {
+            observacoesParaExibir = pedido.observacoes.substring(0, limiteCaracteres) + '...';
+        } else {
+            observacoesParaExibir = pedido.observacoes;
+        }
+    }
+
+    // NOVAS VARIÁVEIS: Data de Envio e Data de Entrega
+    // Usamos '?' para verificar se a data existe antes de formatar, caso contrário, exibe 'Não informada'.
+    const dataEnvio = pedido.data_envio ? formatarData(pedido.data_envio) : 'Não informada';
+    const dataEntrega = pedido.data_entrega ? formatarData(pedido.data_entrega) : 'Não informada';
+
     return `
         <div class="pedido-card" data-pedido-id="${pedido.id}">
             <h3>${nomeCliente}</h3>
-
             <div class="card-info">
                 <p><strong>CPF:</strong> ${pedido.cpf || 'Não informado'}</p>
                 <p><strong>Tipo de Gás:</strong> ${tipoGas}</p>
@@ -189,16 +204,18 @@ function criarCardPedido(pedido) {
                 <p><strong>Volume/Kg:</strong> ${pedido.volume_por_kg || 0} kg</p>
                 <p><strong>Valor Total:</strong> ${valorFormatado}</p>
                 <p><strong>Data Recebimento:</strong> ${dataRecebimento}</p>
+
+                <!-- NOVOS CAMPOS: Data de Envio e Data de Entrega -->
+                <p><strong>Data de Envio:</strong> ${dataEnvio}</p>
+                <p><strong>Data de Entrega:</strong> ${dataEntrega}</p>
+
                 <p><strong>Status:</strong> ${statusBadge}</p>
-
-                ${pedido.observacoes ? `<p><strong>Observações:</strong> ${pedido.observacoes}</p>` : ''}
+                ${observacoesParaExibir ? `<p><strong>Observações:</strong> ${observacoesParaExibir}</p>` : ''}
             </div>
-
             <div class="card-timestamp">
-                Criado em: ${formatarDataHora(pedido.created_at)}
-                ${pedido.updated_at ? ` | Atualizado em: ${formatarDataHora(pedido.updated_at)}` : ''}
+                <p>Criado em: ${formatarDataHora(pedido.created_at)}</p>
+                ${pedido.updated_at ? `<p>Atualizado em: ${formatarDataHora(pedido.updated_at)}</p>` : ''}
             </div>
-
             <div class="card-actions">
                 <button class="btn btn-edit" onclick="abrirModalEditar(${pedido.id})">
                     <span>✏️</span> Editar
