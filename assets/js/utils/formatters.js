@@ -27,20 +27,46 @@ function formatarData(data) {
     return date.toLocaleDateString('pt-BR');
 }
 /**
- * Formata data com hora
- * @param {String} dataHora - Data e hora ISO
+ * Formata data com hora, ajustando para o fuso horário local do usuário.
+ * @param {String} dataHora - Data e hora ISO ou formato MySQL (ex: "2025-11-17 22:16:00")
  * @returns {String} Data e hora formatadas (ex: 27/10/2025 às 14:30)
  */
 function formatarDataHora(dataHora) {
     if (!dataHora) return '-';
-    const date = new Date(dataHora);
+
+    let dateString = dataHora;
+
+    // Detecta formato MySQL: "YYYY-MM-DD HH:MM:SS" (sem 'T')
+    if (typeof dataHora === 'string' && dataHora.includes(' ') && !dataHora.includes('T')) {
+        // Ex: "2025-11-17 22:16:00" -> "2025-11-17T22:16:00Z"
+        const [dataParte, horaParte] = dataHora.split(' ');
+        if (dataParte && horaParte) {
+            dateString = `${dataParte}T${horaParte}Z`; // Adiciona 'T' e 'Z' para forçar UTC
+        }
+    }
+    // Detecta formato ISO sem fuso horário: "YYYY-MM-DDTHH:MM:SS"
+    else if (typeof dataHora === 'string' && dataHora.includes('T') && !dataHora.endsWith('Z') && !dataHora.includes('+') && !dataHora.includes('-')) {
+        // Ex: "2025-11-17T22:16:00" -> "2025-11-17T22:16:00Z"
+        dateString = dataHora + 'Z';
+    }
+
+    const date = new Date(dateString);
+
+    // Verifica se a data é válida após a criação
+    if (isNaN(date.getTime())) {
+        return 'Data inválida';
+    }
+
+    // Formata para o fuso horário local do usuário (Maranhão)
     const data = date.toLocaleDateString('pt-BR');
     const hora = date.toLocaleTimeString('pt-BR', {
         hour: '2-digit',
         minute: '2-digit'
     });
+
     return `${data} às ${hora}`;
 }
+
 /**
  * Formata telefone
  * @param {String} telefone - Telefone (ex: 85999998888)
@@ -72,43 +98,42 @@ function formatarCNPJ(cnpj) {
     return cnpj;
 }
 /**
- * Formata status com badge colorido usando classes CSS.
- * @param {String} status - Status (pendente, aprovado, entregue, cancelado)
- * @returns {String} HTML com badge colorido
+ * Formata status com badge colorido usando classes CSS e emojis.
+ * @param {String} status - Status do pedido (Pendente, Concluido, Enviado, Cancelado)
+ * @returns {String} HTML com badge colorido e emoji
  */
 function formatarStatus(status) {
     let className = '';
     let icon = '';
     let text = '';
-
     switch (status) {
-        case 'pendente':
-            className = 'badge-warning';
+        case 'Pendente': // Ajustado para corresponder ao valor do select (com 'P' maiúsculo)
+            className = 'badge-warning'; // Amarelo para pendente
             icon = '⏳';
             text = 'Pendente';
             break;
-        case 'aprovado':
-            className = 'badge-info'; // Usando info para aprovado, como no seu SCSS
+        case 'Enviado': // Ajustado para corresponder ao valor do select
+            className = 'badge-info'; // Azul para enviado
+            icon = '🚀';
+            text = 'Enviado';
+            break;
+        case 'Concluido': // Ajustado para corresponder ao valor do select (com 'C' maiúsculo)
+            className = 'badge-success'; // Verde para concluído
             icon = '✅';
-            text = 'Aprovado';
+            text = 'Concluído';
             break;
-        case 'entregue':
-            className = 'badge-success';
-            icon = '📦';
-            text = 'Entregue';
-            break;
-        case 'cancelado':
-            className = 'badge-danger';
+        case 'Cancelado': // Ajustado para corresponder ao valor do select (com 'C' maiúsculo)
+            className = 'badge-danger'; // Vermelho para cancelado
             icon = '❌';
             text = 'Cancelado';
             break;
         default:
             className = 'badge-secondary'; // Uma classe padrão caso o status não seja reconhecido
             icon = '❓';
-            text = status;
+            text = status; // Exibe o status original se não for reconhecido
             break;
     }
-    // Retorna o HTML com as classes CSS, sem estilos inline
+    // Retorna o HTML com as classes CSS e o emoji
     return `<span class="badge ${className}">${icon} ${text}</span>`;
 }
 

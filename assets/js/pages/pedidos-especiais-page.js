@@ -29,6 +29,46 @@ let pedidoEditando = null; // ID do pedido sendo editado (null = novo pedido)
 let pedidoParaDeletar = null; // ID do pedido para deletar
 
 // ============================================
+// LISTAS DE OPÇÕES PARA OS SELECTS DO MODAL
+// ============================================
+
+// Opções para o Método de Pagamento (coluna status_pagamento)
+const METODOS_PAGAMENTO = [
+    { value: 'Nenhum', text: 'Nenhum' },
+    { value: 'Pix', text: 'Pix' },
+    { value: 'Dinheiro', text: 'Dinheiro' },
+    { value: 'Transferencia Bancaria', text: 'Transferência Bancária' },
+    { value: 'Cartao de Credito', text: 'Cartão de Crédito' },
+    { value: 'Cartao de Debito', text: 'Cartão de Débito' },
+    { value: 'Boleto Bancario', text: 'Boleto Bancário' },
+    { value: 'Outro', text: 'Outro' }
+];
+
+// Opções para o Status do Pedido (coluna status)
+const STATUS_PEDIDO = [
+    { value: 'Pendente', text: 'Pendente' },
+    { value: 'Concluido', text: 'Concluído' },
+    { value: 'Enviado', text: 'Enviado' },
+    { value: 'Cancelado', text: 'Cancelado' }
+];
+
+// Função auxiliar para popular um elemento <select>
+// Esta função será usada para preencher os selects do modal
+function popularSelect(selectElement, options, selectedValue = '') {
+    selectElement.innerHTML = ''; // Limpa as opções existentes
+    options.forEach(option => {
+        const opt = document.createElement('option');
+        opt.value = option.value;
+        opt.textContent = option.text;
+        if (option.value === selectedValue) {
+            opt.selected = true;
+        }
+        selectElement.appendChild(opt);
+    });
+}
+
+
+// ============================================
 // INICIALIZAÇÃO
 // ============================================
 document.addEventListener('DOMContentLoaded', async () => {
@@ -173,11 +213,18 @@ function renderizarPedidos(pedidos) {
 function criarCardPedido(pedido) {
     // Mapeia os campos do banco para exibição
     const nomeCliente = pedido.nome_pessoa || 'Cliente não identificado';
-    const statusBadge = formatarStatus(pedido.status_pagamento || 'Pendente');
+
+    // Status do pedido (Pendente, Enviado, Concluído, Cancelado...)
+    const statusPedido = pedido.status || 'Pendente';
+    const statusPedidoFormatado = formatarStatus(statusPedido); // Se formatarStatus pinta badge, mantemos
+
+    // Método de pagamento (Pix, Dinheiro, Transferência ...)
+    const metodoPagamento = pedido.status_pagamento || 'Nenhum';
+    const metodoPagamentoFormatado = metodoPagamento; // Se quiser depois podemos criar um formatador também
+
     const valorFormatado = formatarDinheiro(pedido.valor_total || 0);
     const dataRecebimento = formatarData(pedido.data_recebimento);
     const tipoGas = pedido.tipo_gas || 'Não especificado';
-
     // Lógica para truncar as observações (já implementada)
     let observacoesParaExibir = '';
     if (pedido.observacoes) {
@@ -188,7 +235,6 @@ function criarCardPedido(pedido) {
             observacoesParaExibir = pedido.observacoes;
         }
     }
-
     // NOVAS VARIÁVEIS: Data de Envio e Data de Entrega
     // Usamos '?' para verificar se a data existe antes de formatar, caso contrário, exibe 'Não informada'.
     const dataEnvio = pedido.data_envio ? formatarData(pedido.data_envio) : 'Não informada';
@@ -209,7 +255,10 @@ function criarCardPedido(pedido) {
                 <p><strong>Data de Envio:</strong> ${dataEnvio}</p>
                 <p><strong>Data de Entrega:</strong> ${dataEntrega}</p>
 
-                <p><strong>Status:</strong> ${statusBadge}</p>
+                <p><strong>Status do Pedido:</strong> ${statusPedidoFormatado}</p>
+                <p><strong>Método de Pagamento:</strong> ${metodoPagamentoFormatado}</p>
+
+
                 ${observacoesParaExibir ? `<p><strong>Observações:</strong> ${observacoesParaExibir}</p>` : ''}
             </div>
             <div class="card-timestamp">
@@ -233,7 +282,15 @@ function criarCardPedido(pedido) {
 // ============================================
 function abrirModalNovoPedido() {
     pedidoEditando = null; // Novo pedido
-    limparFormulario();
+    limparFormulario(); // Esta função já limpa e define alguns padrões
+
+    // NOVO CÓDIGO: Popular os selects com as opções padrão
+    const metodoPagamentoSelect = document.getElementById('metodoPagamento');
+    const statusPedidoSelect = document.getElementById('statusPedido');
+
+    popularSelect(metodoPagamentoSelect, METODOS_PAGAMENTO, 'Nenhum'); // Padrão: Nenhum
+    popularSelect(statusPedidoSelect, STATUS_PEDIDO, 'Pendente'); // Padrão: Pendente
+
     if (pedidoModal) {
         pedidoModal.classList.add('show');
     }
@@ -252,7 +309,6 @@ async function abrirModalEditar(id) {
             mostrarMensagemErro('Pedido não encontrado.');
             return;
         }
-
         // Preenche o formulário com os dados do pedido
         document.getElementById('pedidoId').value = pedido.id;
         document.getElementById('nomePessoa').value = pedido.nome_pessoa || '';
@@ -266,7 +322,10 @@ async function abrirModalEditar(id) {
         document.getElementById('dataRecebimento').value = pedido.data_recebimento || '';
         document.getElementById('dataEnvio').value = pedido.data_envio || '';
         document.getElementById('dataEntrega').value = pedido.data_entrega || '';
-        document.getElementById('statusPagamento').value = pedido.status_pagamento || 'Pendente';
+        const metodoPagamentoSelect = document.getElementById('metodoPagamento');
+        const statusPedidoSelect = document.getElementById('statusPedido');
+        popularSelect(metodoPagamentoSelect, METODOS_PAGAMENTO, pedido.status_pagamento || 'Nenhum');
+        popularSelect(statusPedidoSelect, STATUS_PEDIDO, pedido.status || 'Pendente');
         document.getElementById('observacoes').value = pedido.observacoes || '';
 
         pedidoEditando = id;
@@ -287,13 +346,20 @@ async function abrirModalEditar(id) {
 function limparFormulario() {
     const form = pedidoModal.querySelector('form');
     if (form) {
-        form.reset();
+        form.reset(); // Isso limpa a maioria dos campos do formulário
     }
-    // Define valores padrão
-    document.getElementById('statusPagamento').value = 'Pendente'; // Corrigido para 'Pendente'
+    // Define valores padrão para campos específicos que não são resetados automaticamente
+    // ou que precisam de um valor inicial específico.
+
+    // REMOVEMOS A LINHA ANTIGA: document.getElementById('statusPagamento').value = 'Pendente';
+    // Pois agora os selects são populados e têm seus padrões definidos em 'abrirModalNovoPedido'
+    // usando a função 'popularSelect'.
+
     document.getElementById('desconto').value = '0.00';
     document.getElementById('valorTotal').value = '0.00'; // Garante que o total seja resetado
+    // Se você tiver outros campos que precisam de um valor padrão após o reset, adicione-os aqui.
 }
+
 
 function fecharModalPedido() {
     if (pedidoModal) {
@@ -322,7 +388,8 @@ async function salvarPedido(event) {
         data_recebimento: document.getElementById('dataRecebimento').value,
         data_envio: document.getElementById('dataEnvio').value,
         data_entrega: document.getElementById('dataEntrega').value,
-        status_pagamento: document.getElementById('statusPagamento').value,
+        status_pagamento: document.getElementById('metodoPagamento').value,
+        status: document.getElementById('statusPedido').value,
         observacoes: document.getElementById('observacoes').value.trim()
     };
 

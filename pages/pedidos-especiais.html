@@ -250,11 +250,28 @@
                         <input type="text" id="valorRecarga" name="valor_recarga" placeholder="0,00" required>
                     </div>
                     <div class="form-group">
-                        <label for="statusPagamento">Pagamento:</label>
-                        <select id="statusPagamento" name="status_pagamento" required>
+                        <label for="metodoPagamento">Método de Pagamento</label> <!-- AQUI: Mudamos o rótulo -->
+                        <select id="metodoPagamento" class="form-control"> <!-- AQUI: Mudamos o ID para ser mais descritivo -->
+                            <option value="Nenhum">Nenhum</option>
+                            <option value="Pix">Pix</option>
+                            <option value="Dinheiro">Dinheiro</option>
+                            <option value="Transferencia Bancaria">Transferência Bancária</option>
+                            <option value="Cartao de Credito">Cartão de Crédito</option>
+                            <option value="Cartao de Debito">Cartão de Débito</option>
+                            <option value="Boleto Bancario">Boleto Bancário</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- AQUI: NOVO CAMPO: Status do Pedido -->
+                <div class="form-row"> <!-- Pode ser um form-group simples se não for em linha com outro -->
+                    <div class="form-group">
+                        <label for="statusPedido">Status do Pedido:</label>
+                        <select id="statusPedido" class="form-control" required>
                             <option value="Pendente">Pendente</option>
-                            <option value="Pago">Pago</option>
-                            <option value="Atrasado">Atrasado</option>
+                            <option value="Concluido">Concluído</option>
+                            <option value="Enviado">Enviado</option>
                             <option value="Cancelado">Cancelado</option>
                         </select>
                     </div>
