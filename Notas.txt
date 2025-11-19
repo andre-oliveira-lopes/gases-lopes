@@ -1,4 +1,4 @@
--- commit: 
+-- commit: Tela de Pedidos Especiais: Adicionei emoji da lupa, melhorei o label de volume e corrigi bug no campo valor total, diminui para 2px a distancia dos botões e os cards.  
 -- lembrete: aviso de segurança do Electron alertando que seu app está 
 configurado de forma que pode ser vulnerável a certos tipos de ataques.
 

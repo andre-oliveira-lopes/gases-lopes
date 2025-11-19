@@ -243,21 +243,18 @@ function criarCardPedido(pedido) {
     return `
         <div class="pedido-card" data-pedido-id="${pedido.id}">
             <h3>${nomeCliente}</h3>
+            <p><strong>Status do Pedido:</strong> ${statusPedidoFormatado}</p>
+
             <div class="card-info">
                 <p><strong>CPF:</strong> ${pedido.cpf || 'Não informado'}</p>
                 <p><strong>Tipo de Gás:</strong> ${tipoGas}</p>
                 <p><strong>Quantidade:</strong> ${pedido.quantidade || 0} unidades</p>
-                <p><strong>Volume/Kg:</strong> ${pedido.volume_por_kg || 0} kg</p>
+                <p><strong>Volume (m³ / Kg):</strong> ${pedido.volume_por_kg || 0} kg</p>
                 <p><strong>Valor Total:</strong> ${valorFormatado}</p>
                 <p><strong>Data Recebimento:</strong> ${dataRecebimento}</p>
-
-                <!-- NOVOS CAMPOS: Data de Envio e Data de Entrega -->
                 <p><strong>Data de Envio:</strong> ${dataEnvio}</p>
                 <p><strong>Data de Entrega:</strong> ${dataEntrega}</p>
-
-                <p><strong>Status do Pedido:</strong> ${statusPedidoFormatado}</p>
                 <p><strong>Método de Pagamento:</strong> ${metodoPagamentoFormatado}</p>
-
 
                 ${observacoesParaExibir ? `<p><strong>Observações:</strong> ${observacoesParaExibir}</p>` : ''}
             </div>
@@ -283,14 +280,11 @@ function criarCardPedido(pedido) {
 function abrirModalNovoPedido() {
     pedidoEditando = null; // Novo pedido
     limparFormulario(); // Esta função já limpa e define alguns padrões
-
     // NOVO CÓDIGO: Popular os selects com as opções padrão
     const metodoPagamentoSelect = document.getElementById('metodoPagamento');
     const statusPedidoSelect = document.getElementById('statusPedido');
-
     popularSelect(metodoPagamentoSelect, METODOS_PAGAMENTO, 'Nenhum'); // Padrão: Nenhum
     popularSelect(statusPedidoSelect, STATUS_PEDIDO, 'Pendente'); // Padrão: Pendente
-
     if (pedidoModal) {
         pedidoModal.classList.add('show');
     }
@@ -298,13 +292,17 @@ function abrirModalNovoPedido() {
         savePedidoBtn.textContent = 'Criar Pedido';
     }
     document.getElementById('modalTitle').textContent = 'Criar Novo Pedido Especial'; // Atualiza o título do modal
+
+    // --- AQUI ESTÁ A CHAMADA PARA CONFIGURAR O CÁLCULO ---
+    configurarCalculoValorTotalModal();
+    // --- FIM DA CHAMADA ---
 }
+
 
 async function abrirModalEditar(id) {
     try {
         console.log('✏️ Carregando pedido para edição:', id);
         const pedido = await PedidosAPI.buscar(id);
-
         if (!pedido) {
             mostrarMensagemErro('Pedido não encontrado.');
             return;
@@ -318,7 +316,10 @@ async function abrirModalEditar(id) {
         document.getElementById('volumePorKg').value = pedido.volume_por_kg || '';
         document.getElementById('valorRecarga').value = pedido.valor_recarga || '';
         document.getElementById('desconto').value = pedido.desconto || '0.00';
-        document.getElementById('valorTotal').value = pedido.valor_total || '';
+        // --- ATENÇÃO AQUI: O valorTotal será preenchido pela função de cálculo,
+        // --- então não precisamos mais do `pedido.valor_total || ''` diretamente aqui.
+        // --- A linha abaixo pode ser removida ou comentada se você quiser que o cálculo prevaleça.
+        // document.getElementById('valorTotal').value = pedido.valor_total || ''; 
         document.getElementById('dataRecebimento').value = pedido.data_recebimento || '';
         document.getElementById('dataEnvio').value = pedido.data_envio || '';
         document.getElementById('dataEntrega').value = pedido.data_entrega || '';
@@ -327,7 +328,6 @@ async function abrirModalEditar(id) {
         popularSelect(metodoPagamentoSelect, METODOS_PAGAMENTO, pedido.status_pagamento || 'Nenhum');
         popularSelect(statusPedidoSelect, STATUS_PEDIDO, pedido.status || 'Pendente');
         document.getElementById('observacoes').value = pedido.observacoes || '';
-
         pedidoEditando = id;
         if (pedidoModal) {
             pedidoModal.classList.add('show');
@@ -337,11 +337,17 @@ async function abrirModalEditar(id) {
         }
         document.getElementById('modalTitle').textContent = `Editar Pedido #${pedido.id}`; // Atualiza o título do modal
 
+        // --- AQUI ESTÁ A CHAMADA PARA CONFIGURAR O CÁLCULO ---
+        // Esta chamada também fará o cálculo inicial com os dados do pedido carregado
+        configurarCalculoValorTotalModal();
+        // --- FIM DA CHAMADA ---
+
     } catch (error) {
         console.error('❌ Erro ao carregar pedido:', error);
         mostrarMensagemErro('Erro ao carregar dados do pedido.');
     }
 }
+
 
 function limparFormulario() {
     const form = pedidoModal.querySelector('form');
@@ -370,21 +376,101 @@ function fecharModalPedido() {
 }
 
 // ============================================
+// CÁLCULO AUTOMÁTICO DO VALOR TOTAL NO MODAL
+// ============================================
+function atualizarValorTotalModal() {
+    const quantidadeInput = document.getElementById('quantidade');
+    const valorRecargaInput = document.getElementById('valorRecarga');
+    const descontoInput = document.getElementById('desconto');
+    const valorTotalInput = document.getElementById('valorTotal');
+
+    // Verifica se todos os campos existem no DOM antes de tentar acessá-los
+    if (!quantidadeInput || !valorRecargaInput || !descontoInput || !valorTotalInput) {
+        console.warn('Um ou mais campos de cálculo do Valor Total não foram encontrados no modal.');
+        return; // Sai da função se algum campo não existir
+    }
+
+    const quantidade = parseInt(quantidadeInput.value) || 0;
+    const valorRecarga = parseFloat(valorRecargaInput.value.replace(',', '.')) || 0;
+    const desconto = parseFloat(descontoInput.value.replace(',', '.')) || 0;
+
+    let valorTotal = (quantidade * valorRecarga) - desconto;
+    if (valorTotal < 0) valorTotal = 0; // Garante que o valor total não seja negativo
+
+    // Formata com 2 casas decimais e vírgula para exibição no input
+    valorTotalInput.value = valorTotal.toFixed(2).replace('.', ',');
+}
+
+
+// ============================================
+// CONFIGURAÇÃO DOS LISTENERS PARA CÁLCULO AUTOMÁTICO
+// ============================================
+function configurarCalculoValorTotalModal() {
+    const quantidadeInput = document.getElementById('quantidade');
+    const valorRecargaInput = document.getElementById('valorRecarga');
+    const descontoInput = document.getElementById('desconto');
+
+    // Remove listeners anteriores para evitar duplicação caso a função seja chamada múltiplas vezes
+    if (quantidadeInput) {
+        quantidadeInput.removeEventListener('input', atualizarValorTotalModal);
+        quantidadeInput.addEventListener('input', atualizarValorTotalModal);
+    }
+    if (valorRecargaInput) {
+        valorRecargaInput.removeEventListener('input', atualizarValorTotalModal);
+        valorRecargaInput.addEventListener('input', atualizarValorTotalModal);
+    }
+    if (descontoInput) {
+        descontoInput.removeEventListener('input', atualizarValorTotalModal);
+        descontoInput.addEventListener('input', atualizarValorTotalModal);
+    }
+
+    // Realiza um cálculo inicial com os valores atuais do modal
+    atualizarValorTotalModal();
+}
+
+
+// ============================================
 // SALVAR PEDIDO (CRIAR OU ATUALIZAR)
 // ============================================
 async function salvarPedido(event) {
     event.preventDefault(); // Previne o envio padrão do formulário
+
+    // --- INÍCIO DAS ALTERAÇÕES ---
+
+    // 1. Coleta os valores dos campos que influenciam o cálculo do valor total
+    const quantidade = parseInt(document.getElementById('quantidade').value) || 0;
+    const valorRecarga = parseFloat(document.getElementById('valorRecarga').value.replace(',', '.')) || 0;
+    const desconto = parseFloat(document.getElementById('desconto').value.replace(',', '.')) || 0;
+
+    // 2. Calcula o valor total antes de montar o objeto pedidoData
+    // Lógica de cálculo: (Quantidade * Valor Recarga) - Desconto
+    // Se a sua lógica de negócio para o "Valor Total" for diferente, me avise!
+    let valorTotalCalculado = (quantidade * valorRecarga) - desconto;
+
+    // Garante que o valor total não seja negativo (opcional, mas boa prática)
+    if (valorTotalCalculado < 0) {
+        valorTotalCalculado = 0;
+    }
+
+    // Arredonda para 2 casas decimais para evitar problemas de ponto flutuante
+    const valorTotalFinal = parseFloat(valorTotalCalculado.toFixed(2));
+
+    // --- FIM DAS ALTERAÇÕES (coleta e cálculo) ---
 
     // Coleta os dados do formulário
     const pedidoData = {
         nome_pessoa: document.getElementById('nomePessoa').value.trim(),
         cpf: document.getElementById('cpf').value.trim(),
         tipo_gas: document.getElementById('tipoGas').value,
-        quantidade: parseInt(document.getElementById('quantidade').value) || 0,
-        volume_por_kg: parseFloat(document.getElementById('volumePorKg').value.replace(',', '.')) || 0, // Lida com vírgula para decimais
-        valor_recarga: parseFloat(document.getElementById('valorRecarga').value.replace(',', '.')) || 0, // Lida com vírgula para decimais
-        desconto: parseFloat(document.getElementById('desconto').value.replace(',', '.')) || 0, // Lida com vírgula para decimais
-        valor_total: parseFloat(document.getElementById('valorTotal').value.replace(',', '.')) || 0, // Lida com vírgula para decimais
+        quantidade: quantidade, // Usamos a variável já coletada
+        volume_por_kg: parseFloat(document.getElementById('volumePorKg').value.replace(',', '.')) || 0,
+        valor_recarga: valorRecarga, // Usamos a variável já coletada
+        desconto: desconto, // Usamos a variável já coletada
+
+        // --- ALTERAÇÃO PRINCIPAL AQUI: Usa o valor total calculado ---
+        valor_total: valorTotalFinal, 
+        // --- FIM DA ALTERAÇÃO PRINCIPAL ---
+
         data_recebimento: document.getElementById('dataRecebimento').value,
         data_envio: document.getElementById('dataEnvio').value,
         data_entrega: document.getElementById('dataEntrega').value,
@@ -392,14 +478,12 @@ async function salvarPedido(event) {
         status: document.getElementById('statusPedido').value,
         observacoes: document.getElementById('observacoes').value.trim()
     };
-
     // Valida os dados
     const validacao = validarFormularioPedido(pedidoData);
     if (!validacao.valido) {
         mostrarMensagemErro('Por favor, corrija os seguintes erros:<br>' + validacao.erros.join('<br>'));
         return;
     }
-
     try {
         if (pedidoEditando) {
             // Atualizar pedido existente
@@ -412,16 +496,15 @@ async function salvarPedido(event) {
             await PedidosAPI.criar(pedidoData);
             mostrarMensagemSucesso('Pedido criado com sucesso!');
         }
-
         // Fecha o modal e recarrega a lista
         fecharModalPedido();
         await carregarPedidos();
-
     } catch (error) {
         console.error('❌ Erro ao salvar pedido:', error);
         mostrarMensagemErro('Erro ao salvar pedido. Verifique os dados e tente novamente.');
     }
 }
+
 
 // ============================================
 // MODAL DE CONFIRMAÇÃO DE EXCLUSÃO
