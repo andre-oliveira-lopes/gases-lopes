@@ -84,7 +84,6 @@ const PedidosAPI = {
             // Remove campos que não existem mais na nova estrutura da tabela `pedidos_especiais`
             // O frontend deve enviar apenas os campos válidos, mas esta é uma camada de segurança.
             delete dadosParaAtualizar.descricao; // Exemplo de campo antigo
-            delete dadosParaAtualizar.quantidade; // Exemplo de campo antigo
             delete dadosParaAtualizar.valor_total_antigo; // Se houver algum campo antigo de valor total
             delete dadosParaAtualizar.status_antigo; // Se houver algum campo antigo de status
             delete dadosParaAtualizar.fornecedor_id; // Conforme já estava

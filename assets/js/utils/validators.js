@@ -205,7 +205,13 @@ function validarFormularioPedido(pedido) {
     // 8. data_recebimento (Obrigatório e não pode ser no passado)
     if (!validarObrigatorio(pedido.data_recebimento)) {
         erros.push('Data de Recebimento é obrigatória.');
-    } else if (!validarDataNaoPassada(pedido.data_recebimento)) {
+    } else if (!pedidoEditando && !validarDataNaoPassada(pedido.data_recebimento)) {
+        // --- AQUI ESTÁ A MUDANÇA ---
+        // A validação 'não pode ser no passado' só é aplicada se NÃO estiver editando.
+        // 'pedidoEditando' é a variável global que indica se estamos editando (tem um ID) ou criando (é null).
+        // Se 'pedidoEditando' for null (novo pedido), a condição será verdadeira e a validação ocorrerá.
+        // Se 'pedidoEditando' tiver um valor (edição), a condição será falsa e a validação será ignorada.
+        // --- FIM DA MUDANÇA ---
         erros.push('Data de Recebimento não pode ser no passado.');
     }
 
@@ -235,7 +241,7 @@ function validarFormularioPedido(pedido) {
 
     return {
         valido: erros.length === 0,
-        erros: erros
+        erros
     };
 }
 

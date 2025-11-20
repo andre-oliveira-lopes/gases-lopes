@@ -1,8 +1,11 @@
--- commit: Tela de Pedidos Especiais: Adicionei emoji da lupa, melhorei o label de volume e corrigi bug no campo valor total, diminui para 2px a distancia dos botões e os cards.  
+-- commit: Tela de Pedidos Especiais: Melhorei a inserção de valores no campo desconto dentro do modal de novo pedido, corrigi o erro de verificação de data recebimento ao editar um card já criado. Corrigi o erro do campo quantidade que não salvava alterações feitas após a criação."  
+
+
+
 -- lembrete: aviso de segurança do Electron alertando que seu app está 
 configurado de forma que pode ser vulnerável a certos tipos de ataques.
 
-✅🔄 ❌🔍🗑️✏️📋✅🚀➕ 
+✅🔄❌🔍🗑️✏️📋✅🚀➕ 
 ----------> feature" (funcionalidade)
 * Adicionar uma nova aba no trecho atividades, com o nome "Troca"
     - essa aba deve apresentar uma forma facil de fazer troca entre cilindros 

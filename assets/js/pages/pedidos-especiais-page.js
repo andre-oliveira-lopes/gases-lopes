@@ -361,7 +361,7 @@ function limparFormulario() {
     // Pois agora os selects são populados e têm seus padrões definidos em 'abrirModalNovoPedido'
     // usando a função 'popularSelect'.
 
-    document.getElementById('desconto').value = '0.00';
+    document.getElementById('desconto').value = ''; // Deixa o campo vazio para o placeholder aparecer
     document.getElementById('valorTotal').value = '0.00'; // Garante que o total seja resetado
     // Se você tiver outros campos que precisam de um valor padrão após o reset, adicione-os aqui.
 }
@@ -434,6 +434,11 @@ function configurarCalculoValorTotalModal() {
 // ============================================
 async function salvarPedido(event) {
     event.preventDefault(); // Previne o envio padrão do formulário
+
+        // --- INÍCIO DOS CONSOLE.LOGS PARA DEBUG ---
+    console.log('--- DEBUG SALVAR PEDIDO ---');
+    console.log('Valor bruto do input "quantidade":', document.getElementById('quantidade').value);
+    // --- FIM DOS CONSOLE.LOGS PARA DEBUG ---
 
     // --- INÍCIO DAS ALTERAÇÕES ---
 
