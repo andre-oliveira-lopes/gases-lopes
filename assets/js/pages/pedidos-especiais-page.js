@@ -173,9 +173,18 @@ async function carregarPedidos(filtros = {}) {
 }
 
 async function buscarPedidos() {
-    const termo = searchInput.value.trim();
+    // Obtém o elemento de busca diretamente usando o ID CORRETO do HTML
+    const campoBuscaPedidos = document.getElementById('searchInput'); // <--- ID CORRIGIDO AQUI!
+    if (!campoBuscaPedidos) {
+        console.warn('Elemento de busca com ID "searchInput" não encontrado.');
+        return; // Sai da função se o elemento não for encontrado
+    }
+
+    const termo = campoBuscaPedidos.value.trim(); // Usa o elemento obtido
+
     try {
         if (termo === '') {
+            console.log('🔍 Termo de busca vazio. Carregando todos os pedidos...');
             await carregarPedidos(); // Se vazio, carrega todos
         } else {
             console.log('🔍 Buscando pedidos por:', termo);
@@ -227,13 +236,17 @@ function criarCardPedido(pedido) {
     const tipoGas = pedido.tipo_gas || 'Não especificado';
     // Lógica para truncar as observações (já implementada)
     let observacoesParaExibir = '';
-    if (pedido.observacoes) {
+    // Verifica se há observações e se elas não estão vazias (após remover espaços)
+    if (pedido.observacoes && pedido.observacoes.trim() !== '') {
         const limiteCaracteres = 30;
         if (pedido.observacoes.length > limiteCaracteres) {
             observacoesParaExibir = pedido.observacoes.substring(0, limiteCaracteres) + '...';
         } else {
             observacoesParaExibir = pedido.observacoes;
         }
+    } else {
+        // Se não houver observações ou estiverem vazias, exibe a mensagem padrão
+        observacoesParaExibir = 'Nenhuma observação escrita aqui';
     }
     // NOVAS VARIÁVEIS: Data de Envio e Data de Entrega
     // Usamos '?' para verificar se a data existe antes de formatar, caso contrário, exibe 'Não informada'.
@@ -255,8 +268,7 @@ function criarCardPedido(pedido) {
                 <p><strong>Data de Envio:</strong> ${dataEnvio}</p>
                 <p><strong>Data de Entrega:</strong> ${dataEntrega}</p>
                 <p><strong>Método de Pagamento:</strong> ${metodoPagamentoFormatado}</p>
-
-                ${observacoesParaExibir ? `<p><strong>Observações:</strong> ${observacoesParaExibir}</p>` : ''}
+                <p><strong>Observações:</strong> ${observacoesParaExibir}</p> 
             </div>
             <div class="card-timestamp">
                 <p>Criado em: ${formatarDataHora(pedido.created_at)}</p>
@@ -434,11 +446,6 @@ function configurarCalculoValorTotalModal() {
 // ============================================
 async function salvarPedido(event) {
     event.preventDefault(); // Previne o envio padrão do formulário
-
-        // --- INÍCIO DOS CONSOLE.LOGS PARA DEBUG ---
-    console.log('--- DEBUG SALVAR PEDIDO ---');
-    console.log('Valor bruto do input "quantidade":', document.getElementById('quantidade').value);
-    // --- FIM DOS CONSOLE.LOGS PARA DEBUG ---
 
     // --- INÍCIO DAS ALTERAÇÕES ---
 
@@ -619,3 +626,42 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// ============================================
+// INÍCIO DA NOVA FUNCIONALIDADE: BUSCA AUTOMÁTICA AO LIMPAR 
+// ============================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Obtém os elementos usando os IDs CORRETOS do HTML
+    const campoBuscaPedidos = document.getElementById('searchInput'); // <--- ID CORRIGIDO AQUI!
+    const btnBuscarPedidos = document.getElementById('searchBtn');   // <--- ID CORRIGIDO AQUI!
+
+    // Listener para o campo de busca (para a funcionalidade de "limpar e mostrar tudo")
+    if (campoBuscaPedidos) {
+        campoBuscaPedidos.addEventListener('input', () => {
+            const termoAtual = campoBuscaPedidos.value.trim();
+            if (termoAtual === '') {
+                // Se o campo estiver vazio, chama a função de busca (que já sabe listar tudo)
+                buscarPedidos();
+            }
+        });
+    } else {
+        console.warn('Elemento com ID "searchInput" não encontrado. A busca automática ao limpar não funcionará.');
+    }
+
+    // Listener para o botão de busca (para a busca manual)
+    if (btnBuscarPedidos) {
+        btnBuscarPedidos.addEventListener('click', (event) => {
+            event.preventDefault(); // Previne o comportamento padrão de formulários (recarregar a página)
+            buscarPedidos(); // Chama a função de busca
+        });
+    } else {
+        console.warn('Elemento com ID "searchBtn" não encontrado. O botão de busca manual não funcionará.');
+    }
+
+    // Opcional: Carregar todos os pedidos na inicialização da página
+    // Se você já tem uma chamada para carregarPedidos() em outro lugar, pode remover esta.
+    // Mas é uma boa prática garantir que a lista seja preenchida ao carregar a página.
+    // carregarPedidos();
+});
+

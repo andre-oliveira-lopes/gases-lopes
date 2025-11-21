@@ -144,10 +144,10 @@ const PedidosEspeciaisModel = {
         const likeTerm = `%${termo}%`;
         return db.prepare(`
             SELECT * FROM pedidos_especiais
-            WHERE nome_pessoa LIKE ?
-               OR tipo_gas LIKE ?
-               OR observacoes LIKE ?
-               OR cpf LIKE ?
+            WHERE nome_pessoa     LIKE ?
+            OR tipo_gas        LIKE ?
+            OR cpf             LIKE ?
+            OR status          LIKE ?   -- <--- adicionamos o status aqui
             ORDER BY created_at DESC
         `).all(likeTerm, likeTerm, likeTerm, likeTerm);
     }

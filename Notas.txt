@@ -1,4 +1,4 @@
--- commit: Tela de Pedidos Especiais: Melhorei a inserção de valores no campo desconto dentro do modal de novo pedido, corrigi o erro de verificação de data recebimento ao editar um card já criado. Corrigi o erro do campo quantidade que não salvava alterações feitas após a criação."  
+-- commit: Tela de Pedidos Especiais: Melhorei o campo observações, se não tiver nada escrito, aparecer: Nenhuma observação escrita aqui. Resolvi o erro de buscar por "status do produto" não funcionava. Adicionei a funcionalidade de, ao apagar o texto da barra de busca, ou seja, deixar ele vazio, é retornado todos os pedidos"
 
 
 
