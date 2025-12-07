@@ -179,7 +179,7 @@
           <!-- Área de busca e novo pedido -->
           <div class="page-actions-bar">
               <div class="search-input-group">
-                  <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nome, CPF, status e tipo de gás">
+                  <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nome, CPF, CNPJ, empresa, fornecedor, status ou tipo de gás">
                   <button id="searchBtn" class="btn btn-primary">
                     🔍 Buscar
                   </button>
@@ -208,16 +208,52 @@
             <form id="pedidoForm">
                 <input type="hidden" id="pedidoId"> <!-- Campo oculto para armazenar o ID do pedido em edição -->
 
-                <!-- LINHA 1: Nome do Cliente e CPF -->
-                <div class="form-row">
+                <!-- ============================================ -->
+                <!-- NOVO: Seleção de Tipo de Cliente (PF/PJ) -->
+                <!-- ============================================ -->
+                <div class="form-row form-row--three-cols">
                     <div class="form-group">
-                        <label for="nomePessoa">Nome do Cliente:</label>
-                        <input type="text" id="nomePessoa" name="nome_pessoa" required>
+                        <label for="tipoClienteSelect">Tipo de Cliente:</label>
+                        <select id="tipoClienteSelect" name="tipo_cliente" class="form-control">
+                            <option value="" selected disabled>Selecione o Tipo</option> 
+                            <option value="PF">Pessoa Física</option>
+                            <option value="PJ">Pessoa Jurídica</option>
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label for="cpf">CPF:</label>
-                        <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+
+                <!-- ============================================ -->
+                <!-- Campos para Pessoa Física (visíveis por padrão) -->
+                <!-- ============================================ -->
+                <!-- Estes dois form-groups aparecerão lado a lado com o select quando PF for selecionado -->
+                <div id="nomePessoaGroup" class="form-group">
+                    <label for="nomePessoa">Nome do Cliente:</label>
+                    <input type="text" id="nomePessoa" name="nome_pessoa" required>
+                </div>
+                <div id="cpfGroup" class="form-group">
+                    <label for="cpf">CPF:</label>
+                    <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- NOVO: Campos para Pessoa Jurídica (ocultos por padrão) -->
+                <!-- ============================================ -->
+                    <!-- Estes dois form-groups aparecerão lado a lado com o select quando PJ for selecionado -->
+                    <div id="nomeEmpresaGroup" class="form-group" style="display: none;">
+                        <label for="nomeEmpresa">Nome da Empresa:</label>
+                        <input type="text" id="nomeEmpresa" name="nome_empresa">
                     </div>
+                    <div id="cnpjGroup" class="form-group" style="display: none;">
+                        <label for="cnpj">CNPJ:</label>
+                        <input type="text" id="cnpj" name="cnpj" placeholder="00.000.000/0000-00">
+                    </div>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- NOVO: Campo para Nome do Fornecedor -->
+                <!-- ============================================ -->
+                <div class="form-group">
+                    <label for="fornecedorNome">Nome do Fornecedor:</label>
+                    <input type="text" id="fornecedorNome" name="fornecedor_nome">
                 </div>
 
                 <!-- LINHA 2: Tipo de Gás, Quantidade e Volume/Kg -->
@@ -244,7 +280,6 @@
                         <input type="text" id="volumePorKg" name="volume_por_kg" placeholder="Ex: 10m³ ou 5kg" required>
                     </div>
                 </div>
-
                 <!-- LINHA 3: Valor da Recarga e Status do Pagamento -->
                 <div class="form-row">
                     <div class="form-group">
@@ -252,8 +287,8 @@
                         <input type="text" id="valorRecarga" name="valor_recarga" placeholder="0,00" required>
                     </div>
                     <div class="form-group">
-                        <label for="metodoPagamento">Método de Pagamento</label> <!-- AQUI: Mudamos o rótulo -->
-                        <select id="metodoPagamento" class="form-control"> <!-- AQUI: Mudamos o ID para ser mais descritivo -->
+                        <label for="metodoPagamento">Método de Pagamento</label>
+                        <select id="metodoPagamento" name="status_pagamento" class="form-control">
                             <option value="Nenhum">Nenhum</option>
                             <option value="Pix">Pix</option>
                             <option value="Dinheiro">Dinheiro</option>
@@ -265,12 +300,11 @@
                         </select>
                     </div>
                 </div>
-
                 <!-- AQUI: NOVO CAMPO: Status do Pedido -->
-                <div class="form-row"> <!-- Pode ser um form-group simples se não for em linha com outro -->
+                <div class="form-row">
                     <div class="form-group">
                         <label for="statusPedido">Status do Pedido:</label>
-                        <select id="statusPedido" class="form-control" required>
+                        <select id="statusPedido" name="status" class="form-control" required>
                             <option value="Pendente">Pendente</option>
                             <option value="Concluido">Concluído</option>
                             <option value="Enviado">Enviado</option>
@@ -278,7 +312,6 @@
                         </select>
                     </div>
                 </div>
-
                 <!-- LINHA 4: Datas de Recebimento, Envio e Entrega -->
                 <div class="form-row form-row--three-cols">
                     <div class="form-group">
@@ -294,25 +327,22 @@
                         <input type="date" id="dataEntrega" name="data_entrega">
                     </div>
                 </div>
-
                 <!-- LINHA 5: Desconto e Valor Total -->
                 <div class="form-row">
                     <div class="form-group">
                         <label for="desconto">Desconto (R$):</label>
-                        <input type="text" id="desconto" name="desconto" placeholder="0,00">
+                        <input type="text" id="desconto" name="desconto" placeholder="0,00"> <!-- Placeholder já estava, mantido -->
                     </div>
                     <div class="form-group">
                         <label for="valorTotal">Valor Total (R$):</label>
                         <input type="text" id="valorTotal" name="valor_total" readonly>
                     </div>
                 </div>
-
                 <!-- LINHA 6: Observações (largura total) -->
                 <div class="form-group">
                     <label for="observacoes">Observação:</label>
                     <textarea id="observacoes" name="observacoes" rows="3"></textarea>
                 </div>
-
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary close-btn">Cancelar</button>
                     <button type="submit" class="btn btn-primary" id="savePedidoBtn">Salvar Pedido</button>
@@ -320,7 +350,6 @@
             </form>
         </div>
     </div>
-
 
     <!-- Modal de Confirmação de Exclusão -->
     <div id="confirmDeleteModal" class="modal">

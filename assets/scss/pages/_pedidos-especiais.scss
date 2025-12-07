@@ -101,7 +101,6 @@
 // ============================================
 // Estilos para a barra de ações (busca e novo pedido)
 // ============================================
-// assets/scss/pages/_pedidos-especiais.scss
 
 .page-actions-bar {
     display: flex;
@@ -117,7 +116,7 @@
     align-items: center;
     gap: var.$spacing-sm; // Este gap já vai espaçar o input, o botão Buscar e o botão Novo Pedido
     flex-grow: 1; // Pode remover se não quiser que ele ocupe todo o espaço
-    max-width: 600px; // Pode ajustar ou remover
+    max-width: 800px; // Pode ajustar ou remover
 }
 
 

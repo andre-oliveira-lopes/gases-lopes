@@ -809,7 +809,7 @@ body {
   align-items: center;
   gap: 12px;
   flex-grow: 1;
-  max-width: 600px;
+  max-width: 800px;
 }
 
 .form-control {

@@ -8,7 +8,7 @@ const { ipcRenderer } = require('electron');
 
 // Importa os módulos usando caminhos relativos à pasta 'pages/'
 const PedidosAPI = require('../assets/js/api/pedidos-especiais.js'); // Caminho CORRIGIDO
-const { validarFormularioPedido } = require('../assets/js/utils/validators.js'); // Caminho CORRIGIDO
+const { validarFormularioPedido } = require('../assets/js/utils/validators.js'); 
 const { formatarDinheiro, formatarData, formatarStatus, formatarDataHora } = require('../assets/js/utils/formatters.js'); // Caminho CORRIGIDO
 
 // ============================================
@@ -163,8 +163,13 @@ function setupEventListeners() {
 async function carregarPedidos(filtros = {}) {
     try {
         console.log('📋 Carregando pedidos...', filtros);
-        const pedidos = await PedidosAPI.listar(filtros);
-        console.log(`✅ ${pedidos.length} pedidos carregados`);
+        // ============================================
+        // ALTERAÇÃO PRINCIPAL AQUI: Adiciona o filtro para ocultarPedido = 0
+        // ============================================
+        const filtrosAtivos = { ...filtros, ocultarPedido: 0 }; // Garante que só pedidos NÃO ocultos sejam listados
+        const pedidos = await PedidosAPI.listar(filtrosAtivos);
+        // ============================================
+        console.log(`✅ ${pedidos.length} pedidos carregados (apenas visíveis)`); // Log atualizado
         renderizarPedidos(pedidos);
     } catch (error) {
         console.error('❌ Erro ao carregar pedidos:', error);
@@ -220,23 +225,47 @@ function renderizarPedidos(pedidos) {
 }
 
 function criarCardPedido(pedido) {
-    // Mapeia os campos do banco para exibição
-    const nomeCliente = pedido.nome_pessoa || 'Cliente não identificado';
+    // ============================================
+    // NOVO: Lógica para determinar o nome principal e identificador do cliente
+    // ============================================
+    let nomeClientePrincipal = 'Cliente não identificado';
+    let identificadorCliente = 'Não informado';
+    let labelIdentificador = ''; // Para exibir "CPF" ou "CNPJ"
+
+    if (pedido.tipo_cliente === 'PF') {
+        nomeClientePrincipal = pedido.nome_pessoa || 'Pessoa Física não identificada';
+        identificadorCliente = pedido.cpf || 'Não informado';
+        labelIdentificador = 'CPF';
+    } else if (pedido.tipo_cliente === 'PJ') {
+        nomeClientePrincipal = pedido.nome_empresa || 'Empresa não identificada';
+        identificadorCliente = pedido.cnpj || 'Não informado';
+        labelIdentificador = 'CNPJ';
+    } else {
+        // Caso tipo_cliente não esteja definido ou seja inválido, tenta usar nome_pessoa como fallback
+        nomeClientePrincipal = pedido.nome_pessoa || 'Cliente não identificado';
+        identificadorCliente = pedido.cpf || 'Não informado';
+        labelIdentificador = 'CPF'; // Padrão para fallback
+    }
+
+    const fornecedorNome = pedido.fornecedor_nome || 'Não informado'; // Novo campo
+    // ============================================
+    // FIM DA LÓGICA DE CLIENTE
+    // ============================================
 
     // Status do pedido (Pendente, Enviado, Concluído, Cancelado...)
     const statusPedido = pedido.status || 'Pendente';
-    const statusPedidoFormatado = formatarStatus(statusPedido); // Se formatarStatus pinta badge, mantemos
+    const statusPedidoFormatado = formatarStatus(statusPedido); // Assumindo que formatarStatus já adiciona emojis
 
     // Método de pagamento (Pix, Dinheiro, Transferência ...)
     const metodoPagamento = pedido.status_pagamento || 'Nenhum';
-    const metodoPagamentoFormatado = metodoPagamento; // Se quiser depois podemos criar um formatador também
+    const metodoPagamentoFormatado = metodoPagamento;
 
     const valorFormatado = formatarDinheiro(pedido.valor_total || 0);
     const dataRecebimento = formatarData(pedido.data_recebimento);
     const tipoGas = pedido.tipo_gas || 'Não especificado';
-    // Lógica para truncar as observações (já implementada)
+
+    // Lógica para truncar as observações
     let observacoesParaExibir = '';
-    // Verifica se há observações e se elas não estão vazias (após remover espaços)
     if (pedido.observacoes && pedido.observacoes.trim() !== '') {
         const limiteCaracteres = 30;
         if (pedido.observacoes.length > limiteCaracteres) {
@@ -245,21 +274,22 @@ function criarCardPedido(pedido) {
             observacoesParaExibir = pedido.observacoes;
         }
     } else {
-        // Se não houver observações ou estiverem vazias, exibe a mensagem padrão
         observacoesParaExibir = 'Nenhuma observação escrita aqui';
     }
-    // NOVAS VARIÁVEIS: Data de Envio e Data de Entrega
-    // Usamos '?' para verificar se a data existe antes de formatar, caso contrário, exibe 'Não informada'.
+
+    // Data de Envio e Data de Entrega
     const dataEnvio = pedido.data_envio ? formatarData(pedido.data_envio) : 'Não informada';
     const dataEntrega = pedido.data_entrega ? formatarData(pedido.data_entrega) : 'Não informada';
 
     return `
         <div class="pedido-card" data-pedido-id="${pedido.id}">
-            <h3>${nomeCliente}</h3>
+            <h3>${nomeClientePrincipal}</h3>
             <p><strong>Status do Pedido:</strong> ${statusPedidoFormatado}</p>
-
+            <!-- <p><strong>Tipo de Cliente:</strong> ${pedido.tipo_cliente || 'Não informado'}</p> <!-- Novo: Exibe o tipo de cliente -->
             <div class="card-info">
-                <p><strong>CPF:</strong> ${pedido.cpf || 'Não informado'}</p>
+                <p><strong>${labelIdentificador}:</strong> ${identificadorCliente}</p> <!-- Atualizado: CPF ou CNPJ -->
+                <p><strong>Fornecedor:</strong> ${fornecedorNome}</p> <!-- Novo: Nome do Fornecedor -->
+                
                 <p><strong>Tipo de Gás:</strong> ${tipoGas}</p>
                 <p><strong>Quantidade:</strong> ${pedido.quantidade || 0} unidades</p>
                 <p><strong>Volume (m³ / Kg):</strong> ${pedido.volume_por_kg || 0} kg</p>
@@ -291,24 +321,35 @@ function criarCardPedido(pedido) {
 // ============================================
 function abrirModalNovoPedido() {
     pedidoEditando = null; // Novo pedido
-    limparFormulario(); // Esta função já limpa e define alguns padrões
-    // NOVO CÓDIGO: Popular os selects com as opções padrão
+    limparFormulario();    // Limpa tudo
+
+    // Selects de método de pagamento e status
     const metodoPagamentoSelect = document.getElementById('metodoPagamento');
     const statusPedidoSelect = document.getElementById('statusPedido');
-    popularSelect(metodoPagamentoSelect, METODOS_PAGAMENTO, 'Nenhum'); // Padrão: Nenhum
-    popularSelect(statusPedidoSelect, STATUS_PEDIDO, 'Pendente'); // Padrão: Pendente
+    popularSelect(metodoPagamentoSelect, METODOS_PAGAMENTO, 'Nenhum');   // Padrão: Nenhum
+    popularSelect(statusPedidoSelect, STATUS_PEDIDO, 'Pendente');        // Padrão: Pendente
+
+    // *** NOVO: deixa o tipo de cliente em branco ("Selecione o Tipo") ***
+    const tipoClienteSelect = document.getElementById('tipoClienteSelect');
+    if (tipoClienteSelect) {
+        tipoClienteSelect.value = ''; // value = ""  → opção "Selecione o Tipo"
+    }
+
+    // Garante que os campos PF/PJ comecem ocultos
+    inicializarControleTipoCliente();
+
     if (pedidoModal) {
         pedidoModal.classList.add('show');
     }
     if (savePedidoBtn) {
         savePedidoBtn.textContent = 'Criar Pedido';
     }
-    document.getElementById('modalTitle').textContent = 'Criar Novo Pedido Especial'; // Atualiza o título do modal
+    document.getElementById('modalTitle').textContent = 'Criar Novo Pedido Especial';
 
-    // --- AQUI ESTÁ A CHAMADA PARA CONFIGURAR O CÁLCULO ---
+    // Cálculo do valor total no modal
     configurarCalculoValorTotalModal();
-    // --- FIM DA CHAMADA ---
 }
+
 
 
 async function abrirModalEditar(id) {
@@ -319,28 +360,44 @@ async function abrirModalEditar(id) {
             mostrarMensagemErro('Pedido não encontrado.');
             return;
         }
+
         // Preenche o formulário com os dados do pedido
         document.getElementById('pedidoId').value = pedido.id;
+
+        // ============================================
+        // NOVO: Preenchimento dos campos de Tipo de Cliente, PF/PJ e Fornecedor
+        // ============================================
+        document.getElementById('tipoClienteSelect').value = pedido.tipo_cliente || 'PF'; // Define o tipo de cliente
         document.getElementById('nomePessoa').value = pedido.nome_pessoa || '';
         document.getElementById('cpf').value = pedido.cpf || '';
+        document.getElementById('nomeEmpresa').value = pedido.nome_empresa || '';
+        document.getElementById('cnpj').value = pedido.cnpj || '';
+        document.getElementById('fornecedorNome').value = pedido.fornecedor_nome || ''; // Novo campo
+        // ============================================
+        // FIM DO PREENCHIMENTO DOS NOVOS CAMPOS
+        // ============================================
+
         document.getElementById('tipoGas').value = pedido.tipo_gas || '';
         document.getElementById('quantidade').value = pedido.quantidade || '';
         document.getElementById('volumePorKg').value = pedido.volume_por_kg || '';
         document.getElementById('valorRecarga').value = pedido.valor_recarga || '';
         document.getElementById('desconto').value = pedido.desconto || '0.00';
-        // --- ATENÇÃO AQUI: O valorTotal será preenchido pela função de cálculo,
-        // --- então não precisamos mais do `pedido.valor_total || ''` diretamente aqui.
-        // --- A linha abaixo pode ser removida ou comentada se você quiser que o cálculo prevaleça.
+        // A linha abaixo pode ser removida ou comentada se você quiser que o cálculo prevaleça.
         // document.getElementById('valorTotal').value = pedido.valor_total || ''; 
         document.getElementById('dataRecebimento').value = pedido.data_recebimento || '';
         document.getElementById('dataEnvio').value = pedido.data_envio || '';
         document.getElementById('dataEntrega').value = pedido.data_entrega || '';
+
         const metodoPagamentoSelect = document.getElementById('metodoPagamento');
         const statusPedidoSelect = document.getElementById('statusPedido');
         popularSelect(metodoPagamentoSelect, METODOS_PAGAMENTO, pedido.status_pagamento || 'Nenhum');
         popularSelect(statusPedidoSelect, STATUS_PEDIDO, pedido.status || 'Pendente');
+
         document.getElementById('observacoes').value = pedido.observacoes || '';
-        pedidoEditando = id;
+
+        pedidoEditando = id; // Garante que a variável global 'pedidoEditando' seja atualizada
+
+        // Exibe o modal e atualiza o botão
         if (pedidoModal) {
             pedidoModal.classList.add('show');
         }
@@ -349,16 +406,24 @@ async function abrirModalEditar(id) {
         }
         document.getElementById('modalTitle').textContent = `Editar Pedido #${pedido.id}`; // Atualiza o título do modal
 
-        // --- AQUI ESTÁ A CHAMADA PARA CONFIGURAR O CÁLCULO ---
-        // Esta chamada também fará o cálculo inicial com os dados do pedido carregado
+        // ============================================
+        // IMPORTANTE: Chama a função para ajustar a visibilidade dos campos PF/PJ
+        // ============================================
+        inicializarControleTipoCliente(); 
+        // Esta chamada vai garantir que, após preencher o 'tipoClienteSelect',
+        // os campos corretos (PF ou PJ) sejam exibidos e os outros ocultados,
+        // e os 'required' sejam aplicados.
+        // ============================================
+
+        // Chama a função para configurar o cálculo do valor total (se houver)
         configurarCalculoValorTotalModal();
-        // --- FIM DA CHAMADA ---
 
     } catch (error) {
         console.error('❌ Erro ao carregar pedido:', error);
         mostrarMensagemErro('Erro ao carregar dados do pedido.');
     }
 }
+
 
 
 function limparFormulario() {
@@ -469,10 +534,41 @@ async function salvarPedido(event) {
 
     // --- FIM DAS ALTERAÇÕES (coleta e cálculo) ---
 
+    // ============================================
+    // NOVO: Coleta o tipo de cliente e os campos específicos
+    // ============================================
+    const tipoCliente = document.getElementById('tipoClienteSelect').value;
+    let nomePessoa = '';
+    let cpf = '';
+    let nomeEmpresa = '';
+    let cnpj = '';
+
+    // Coleta os valores apenas dos campos que estão visíveis/relevantes
+    // A função inicializarControleTipoCliente já limpa os campos ocultos,
+    // então podemos ler todos e eles virão vazios se não forem relevantes.
+    if (tipoCliente === 'PF') {
+        nomePessoa = document.getElementById('nomePessoa').value.trim();
+        cpf = document.getElementById('cpf').value.trim();
+    } else if (tipoCliente === 'PJ') {
+        nomeEmpresa = document.getElementById('nomeEmpresa').value.trim();
+        cnpj = document.getElementById('cnpj').value.trim();
+    }
+
+    const fornecedorNome = document.getElementById('fornecedorNome').value.trim(); // Novo campo
+
     // Coleta os dados do formulário
     const pedidoData = {
-        nome_pessoa: document.getElementById('nomePessoa').value.trim(),
-        cpf: document.getElementById('cpf').value.trim(),
+        // ============================================
+        // CAMPOS DE CLIENTE E FORNECEDOR (NOVOS E ATUALIZADOS)
+        // ============================================
+        tipo_cliente: tipoCliente,
+        nome_pessoa: nomePessoa,
+        cpf: cpf,
+        nome_empresa: nomeEmpresa,
+        cnpj: cnpj,
+        fornecedor_nome: fornecedorNome, // Novo campo
+        // ============================================
+
         tipo_gas: document.getElementById('tipoGas').value,
         quantidade: quantidade, // Usamos a variável já coletada
         volume_por_kg: parseFloat(document.getElementById('volumePorKg').value.replace(',', '.')) || 0,
@@ -497,18 +593,16 @@ async function salvarPedido(event) {
         return;
     }
     try {
-        if (pedidoEditando) {
-            // Atualizar pedido existente
-            console.log('✏️ Atualizando pedido:', pedidoEditando);
-            await PedidosAPI.atualizar(pedidoEditando, pedidoData);
+        const pedidoId = document.getElementById('pedidoId').value; // Pega o ID do campo oculto
+        if (pedidoId) { // Se o ID existe, estamos editando
+            console.log('✏️ Atualizando pedido:', pedidoId);
+            await PedidosAPI.atualizar(pedidoId, pedidoData); // Passa o ID para a API
             mostrarMensagemSucesso('Pedido atualizado com sucesso!');
         } else {
-            // Criar novo pedido
             console.log('➕ Criando novo pedido');
             await PedidosAPI.criar(pedidoData);
             mostrarMensagemSucesso('Pedido criado com sucesso!');
         }
-        // Fecha o modal e recarrega a lista
         fecharModalPedido();
         await carregarPedidos();
     } catch (error) {
@@ -537,19 +631,20 @@ function fecharModalConfirmacao() {
 
 async function deletarPedidoConfirmado() {
     if (!pedidoParaDeletar) return;
-
     try {
-        console.log('🗑️ Confirmando exclusão do pedido:', pedidoParaDeletar);
+        console.log('👻 Ocultando pedido (soft delete):', pedidoParaDeletar);
+        // ============================================
+        // CORREÇÃO: Chamar PedidosAPI.deletar para realizar o soft delete
+        // ============================================
         await PedidosAPI.deletar(pedidoParaDeletar);
-        mostrarMensagemSucesso('Pedido excluído com sucesso!');
-
+        // ============================================
+        mostrarMensagemSucesso('Pedido ocultado com sucesso!'); // Mensagem atualizada
         // Fecha o modal e recarrega a lista
         fecharModalConfirmacao();
-        await carregarPedidos();
-
+        await carregarPedidos({ ocultarPedido: 0 });
     } catch (error) {
-        console.error('❌ Erro ao deletar pedido:', error);
-        mostrarMensagemErro('Erro ao excluir pedido. Tente novamente.');
+        console.error('❌ Erro ao ocultar pedido:', error);
+        mostrarMensagemErro('Erro ao ocultar pedido. Tente novamente.');
     }
 }
 
@@ -663,5 +758,95 @@ document.addEventListener('DOMContentLoaded', () => {
     // Se você já tem uma chamada para carregarPedidos() em outro lugar, pode remover esta.
     // Mas é uma boa prática garantir que a lista seja preenchida ao carregar a página.
     // carregarPedidos();
+    // Inicializa o controle PF/PJ do modal
+    inicializarControleTipoCliente();
 });
 
+// ============================================
+// Controle de Tipo de Cliente (PF x PJ) com DROP DOWN - AGORA LADO A LADO
+// ============================================
+function inicializarControleTipoCliente() {
+    const tipoClienteSelect = document.getElementById('tipoClienteSelect');
+
+    // Referências aos grupos de campos de PF
+    const nomePessoaGroup   = document.getElementById('nomePessoaGroup');
+    const cpfGroup          = document.getElementById('cpfGroup');
+    const nomePessoaInput   = document.getElementById('nomePessoa');
+    const cpfInput          = document.getElementById('cpf');
+
+    // Referências aos grupos de campos de PJ
+    const nomeEmpresaGroup  = document.getElementById('nomeEmpresaGroup');
+    const cnpjGroup         = document.getElementById('cnpjGroup');
+    const nomeEmpresaInput  = document.getElementById('nomeEmpresa');
+    const cnpjInput         = document.getElementById('cnpj');
+
+    function atualizarVisibilidadeCampos() {
+        const tipo = tipoClienteSelect.value; // "", "PF" ou "PJ"
+
+        if (tipo === 'PF') {
+            // Mostra campos de Pessoa Física
+            nomePessoaGroup.style.display = '';
+            cpfGroup.style.display        = '';
+            // Esconde campos de Pessoa Jurídica
+            nomeEmpresaGroup.style.display = 'none';
+            cnpjGroup.style.display        = 'none';
+
+            // Required para PF
+            nomePessoaInput.required  = true;
+            cpfInput.required         = true;
+            // Remove required de PJ
+            nomeEmpresaInput.required = false;
+            cnpjInput.required        = false;
+
+            // Limpa campos de PJ
+            nomeEmpresaInput.value = '';
+            cnpjInput.value        = '';
+
+        } else if (tipo === 'PJ') {
+            // Esconde campos de Pessoa Física
+            nomePessoaGroup.style.display = 'none';
+            cpfGroup.style.display        = 'none';
+            // Mostra campos de Pessoa Jurídica
+            nomeEmpresaGroup.style.display = '';
+            cnpjGroup.style.display        = '';
+
+            // Remove required de PF
+            nomePessoaInput.required  = false;
+            cpfInput.required         = false;
+            // Required para PJ
+            nomeEmpresaInput.required = true;
+            cnpjInput.required        = true;
+
+            // Limpa campos de PF
+            nomePessoaInput.value = '';
+            cpfInput.value        = '';
+
+        } else {
+            // *** NOVO: Estado vazio (value = "") ***
+            // Esconde TODOS os campos de PF e PJ
+            nomePessoaGroup.style.display  = 'none';
+            cpfGroup.style.display         = 'none';
+            nomeEmpresaGroup.style.display = 'none';
+            cnpjGroup.style.display        = 'none';
+
+            // Remove required de TODOS
+            nomePessoaInput.required  = false;
+            cpfInput.required         = false;
+            nomeEmpresaInput.required = false;
+            cnpjInput.required        = false;
+
+            // Limpa TODOS os campos
+            nomePessoaInput.value  = '';
+            cpfInput.value         = '';
+            nomeEmpresaInput.value = '';
+            cnpjInput.value        = '';
+        }
+    }
+
+    // Atualiza quando o usuário muda o select
+    tipoClienteSelect.addEventListener('change', atualizarVisibilidadeCampos);
+
+    // Garante estado correto ao abrir o modal
+    atualizarVisibilidadeCampos();
+}
+// ============================================

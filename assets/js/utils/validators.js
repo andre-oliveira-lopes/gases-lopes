@@ -165,79 +165,90 @@ function validarDataEntregaAposEnvio(dataEnvio, dataEntrega) {
 function validarFormularioPedido(pedido) {
     const erros = [];
 
-    // 1. nome_pessoa (Obrigatório)
-    if (!validarObrigatorio(pedido.nome_pessoa)) {
-        erros.push('Nome do Cliente é obrigatório.');
+    // ============================================
+    // NOVO: Validação condicional para Tipo de Cliente (PF/PJ)
+    // ============================================
+    if (!validarObrigatorio(pedido.tipo_cliente)) {
+        erros.push('Tipo de Cliente é obrigatório.');
+    } else if (pedido.tipo_cliente === 'PF') {
+        // Validações para Pessoa Física
+        if (!validarObrigatorio(pedido.nome_pessoa)) {
+            erros.push('Nome do Cliente (Pessoa Física) é obrigatório.');
+        }
+        if (!validarObrigatorio(pedido.cpf)) {
+            erros.push('CPF é obrigatório.');
+        } else if (!validarCPF(pedido.cpf)) {
+            erros.push('CPF inválido.');
+        }
+    } else if (pedido.tipo_cliente === 'PJ') {
+        // Validações para Pessoa Jurídica
+        if (!validarObrigatorio(pedido.nome_empresa)) {
+            erros.push('Nome da Empresa é obrigatório.');
+        }
+        if (!validarObrigatorio(pedido.cnpj)) {
+            erros.push('CNPJ é obrigatório.');
+        } else if (!validarCNPJ(pedido.cnpj)) { // Assumindo que você tem uma função validarCNPJ
+            erros.push('CNPJ inválido.');
+        }
     }
+    // ============================================
+    // FIM DA VALIDAÇÃO CONDICIONAL
+    // ============================================
 
-    // 2. cpf (Obrigatório e válido)
-    if (!validarObrigatorio(pedido.cpf)) {
-        erros.push('CPF é obrigatório.');
-    } else if (!validarCPF(pedido.cpf)) {
-        erros.push('CPF inválido.');
-    }
+    // 1. fornecedor_nome (Opcional, se fosse obrigatório, a validação seria aqui)
+    // if (!validarObrigatorio(pedido.fornecedor_nome)) {
+    //     erros.push('Nome do Fornecedor é obrigatório.');
+    // }
 
-    // 3. tipo_gas (Obrigatório)
+    // 2. tipo_gas (Obrigatório)
     if (!validarObrigatorio(pedido.tipo_gas)) {
         erros.push('Tipo de Gás é obrigatório.');
     }
-
-    // 4. volume_por_kg (Obrigatório)
+    // 3. volume_por_kg (Obrigatório)
     if (!validarObrigatorio(pedido.volume_por_kg)) {
         erros.push('Volume/Kg é obrigatório.');
     }
-
-    // 5. valor_recarga (Obrigatório e número positivo)
+    // 4. valor_recarga (Obrigatório e número positivo)
     if (!validarObrigatorio(pedido.valor_recarga)) {
         erros.push('Valor da Recarga é obrigatório.');
     } else if (!validarNumeroPositivo(pedido.valor_recarga)) {
         erros.push('Valor da Recarga deve ser um número positivo.');
     }
-
-    // 6. desconto (Opcional, mas se preenchido, deve ser número não negativo)
+    // 5. desconto (Opcional, mas se preenchido, deve ser número não negativo)
     if (validarObrigatorio(pedido.desconto) && !validarNumeroNaoNegativo(pedido.desconto)) {
         erros.push('Desconto deve ser um número não negativo.');
     }
+    // 6. valor_total (Calculado, geralmente não é validado aqui)
 
-    // 7. valor_total (Calculado, mas pode ser validado se for enviado)
-    // Geralmente não é validado aqui, pois é um campo calculado.
-
-    // 8. data_recebimento (Obrigatório e não pode ser no passado)
+    // 7. data_recebimento (Obrigatória e não pode ser no passado para novos pedidos)
     if (!validarObrigatorio(pedido.data_recebimento)) {
         erros.push('Data de Recebimento é obrigatória.');
     } else if (!pedidoEditando && !validarDataNaoPassada(pedido.data_recebimento)) {
-        // --- AQUI ESTÁ A MUDANÇA ---
-        // A validação 'não pode ser no passado' só é aplicada se NÃO estiver editando.
-        // 'pedidoEditando' é a variável global que indica se estamos editando (tem um ID) ou criando (é null).
-        // Se 'pedidoEditando' for null (novo pedido), a condição será verdadeira e a validação ocorrerá.
-        // Se 'pedidoEditando' tiver um valor (edição), a condição será falsa e a validação será ignorada.
-        // --- FIM DA MUDANÇA ---
         erros.push('Data de Recebimento não pode ser no passado.');
     }
-
-    // 9. data_envio (Opcional, mas se preenchido, deve ser após ou igual à data de recebimento)
+    // 8. data_envio (Opcional, mas se preenchido, deve ser após ou igual à data de recebimento)
     if (validarObrigatorio(pedido.data_envio)) {
         if (!validarDataEnvioAposRecebimento(pedido.data_recebimento, pedido.data_envio)) {
             erros.push('Data de Envio deve ser posterior ou igual à Data de Recebimento.');
         }
     }
-
-    // 10. data_entrega (Opcional, mas se preenchido, deve ser após ou igual à data de envio)
+    // 9. data_entrega (Opcional, mas se preenchido, deve ser após ou igual à data de envio)
     if (validarObrigatorio(pedido.data_entrega)) {
         if (validarObrigatorio(pedido.data_envio) && !validarDataEntregaAposEnvio(pedido.data_envio, pedido.data_entrega)) {
             erros.push('Data de Entrega deve ser posterior ou igual à Data de Envio.');
         } else if (!validarObrigatorio(pedido.data_envio) && !validarDataNaoPassada(pedido.data_entrega)) {
-            // Se data_envio não foi preenchida, data_entrega deve ser pelo menos hoje
             erros.push('Data de Entrega não pode ser no passado.');
         }
     }
-
-    // 11. status_pagamento (Obrigatório)
+    // 10. status_pagamento (Obrigatório)
     if (!validarObrigatorio(pedido.status_pagamento)) {
         erros.push('Status do Pagamento é obrigatório.');
     }
-
-    // 12. observacoes (Opcional, não precisa de validação específica além de obrigatório se fosse o caso)
+    // 11. status (Obrigatório)
+    if (!validarObrigatorio(pedido.status)) {
+        erros.push('Status do Pedido é obrigatório.');
+    }
+    // 12. observacoes (Opcional)
 
     return {
         valido: erros.length === 0,

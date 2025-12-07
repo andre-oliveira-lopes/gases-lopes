@@ -1,11 +1,16 @@
--- commit: Tela de Pedidos Especiais: Melhorei o campo observações, se não tiver nada escrito, aparecer: Nenhuma observação escrita aqui. Resolvi o erro de buscar por "status do produto" não funcionava. Adicionei a funcionalidade de, ao apagar o texto da barra de busca, ou seja, deixar ele vazio, é retornado todos os pedidos"
+----------> commit: 
+Pedidos Especiais: adicionar novos campos, PF/PJ no modal e soft delete
+- Adiciona campos na tabela: tipo_cliente, nome_empresa, cnpj, fornecedor_nome e ocultarPedido
+- Implementa soft delete usando a coluna ocultarPedido em vez de excluir registros
+- Atualiza busca para considerar nome da empresa, nome do fornecedor e CNPJ
+- Atualiza modal de pedidos especiais com seleção PF/PJ e campos dinâmicos de cliente (nome/CPF ou empresa/CNPJ)
+- Ajustei validação, salvamento, edição e listagem para suportar os novos campos. 
 
 
+----------> Emojis
+✅❌🔍🗑️✏️🚀➕⏳--📋🔄 
 
--- lembrete: aviso de segurança do Electron alertando que seu app está 
-configurado de forma que pode ser vulnerável a certos tipos de ataques.
-
-✅🔄❌🔍🗑️✏️📋✅🚀➕ 
+ 
 ----------> feature" (funcionalidade)
 * Adicionar uma nova aba no trecho atividades, com o nome "Troca"
     - essa aba deve apresentar uma forma facil de fazer troca entre cilindros 
@@ -19,57 +24,36 @@ configurado de forma que pode ser vulnerável a certos tipos de ataques.
     - essa aba deve apresentar a quantidade dos tipos de gases que temos para 
     vender: Oxigênio, Acetileno, Nitrogênio, Argônio, Mistura, CO², Ar Medicinal.
 
+----------> bug (Problemas)
+* lembrete: aviso de segurança do Electron alertando que seu app está configurado de forma que pode ser vulnerável a certos tipos de ataques.
+* Os cards ficam em formato de grade, mas não estão padrões. 
+* Melhorar o visual do modal pra não pegar a tela toda. 
+* Possibilidade de adicionar mais de um produto no cadastro. 
+* Seria necessário criar um arquivo PDF simples para que eu possa fazer dawnloads.  
 
+Adicionar um campo no banco de dados:
+* Ao apagar no botão da lixeira, ele só apaga no front-end. Ainda fica salvo no banco. O botão vai mortificar a coluna “Oculto” do banco, como padrão quando cria um registro vai ser SIM. Quando excluir, vai mudar para NÃO. 
+* Adicionar o campo de qual fornecedor levou o pedido especial. 
+* e quando eu tiver guardando um pedido especial de uma empresa?
 
-const db = require('../db');
+=======================================================================
+Melhorar o modal pra deixar mais bonito
+colocar os campos que agora eu posso faze busca. 
 
-function criarCilindro(cilindro) {
-    const stmt = db.prepare(`
-        INSERT INTO cilindros (codigo, tipo, capacidade, pressao_max, status)
-        VALUES (?, ?, ?, ?, ?)
-    `);
-    
-    const result = stmt.run(
-        cilindro.codigo,
-        cilindro.tipo,
-        cilindro.capacidade,
-        cilindro.pressao_max || null,
-        cilindro.status || 'disponivel'
-    );
-    
-    return result.lastInsertRowid;
-}
+Sobre documentação e visualização com PlantUML
+Vamos criar um arquivo de documentação: docs/banco-erd.puml.
+Nesse arquivo, descreveremos as tabelas (como pedidos_especiais) em formato texto com PlantUML.
+Esse arquivo servirá como “mapa” do banco: colunas, tipos e relacionamentos.
+Vamos usar uma extensão de PlantUML no VS Code para visualizar o diagrama diretamente no editor.
+Com o tempo, manteremos o diagrama atualizado conforme o banco evoluir.
+Essa documentação, junto com índices bem planejados, ajuda o sistema a se manter organizado, auditável e eficiente por muitos anos.
 
-function listarCilindros(filtros = {}) {
-    let query = 'SELECT * FROM cilindros WHERE 1=1';
-    const params = [];
-    
-    if (filtros.status) {
-        query += ' AND status = ?';
-        params.push(filtros.status);
-    }
-    
-    query += ' ORDER BY codigo';
-    
-    const stmt = db.prepare(query);
-    return stmt.all(...params);
-}
+=========================================================================
 
-module.exports = {
-    criarCilindro,
-    listarCilindros
-};
-
-
--------------------------------
-
-const cilindrosModel = require('./database/models/cilindros');
-
-ipcMain.handle('cilindros:listar', async (event, filtros) => {
-    return cilindrosModel.listarCilindros(filtros);
-});
-
-ipcMain.handle('cilindros:criar', async (event, cilindro) => {
-    const id = cilindrosModel.criarCilindro(cilindro);
-    return { success: true, id };
-});
+A tabela terá índices para otimizar consultas futuras, especialmente em campos como:
+ocultarPedido (para filtros de visibilidade)
+status (para filtros de status do pedido)
+created_at (para filtros por data de criação)
+cpf (se a busca por CPF for muito frequente)
+cnpj (se a busca por CNPJ for muito frequente)
+Esses índices serão adicionados conforme a necessidade de performance do sistema crescer ao longo dos anos.
