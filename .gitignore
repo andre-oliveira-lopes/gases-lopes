@@ -1,6 +1,13 @@
 # Ignorar dependências e arquivos de build
+
+# Imagens geradas pelo PlantUML
+docs/img/*.png
+docs/img/*.svg
+# Node.js dependencies
 node_modules/
+# Build output
 dist/
+# Arquivos temporários e de configuração
 *.exe
 *.dll
 *.log

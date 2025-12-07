@@ -220,11 +220,9 @@ function validarFormularioPedido(pedido) {
     }
     // 6. valor_total (Calculado, geralmente não é validado aqui)
 
-    // 7. data_recebimento (Obrigatória e não pode ser no passado para novos pedidos)
+    // 7. data_recebimento (Obrigatória, mas pode ser no passado)
     if (!validarObrigatorio(pedido.data_recebimento)) {
         erros.push('Data de Recebimento é obrigatória.');
-    } else if (!pedidoEditando && !validarDataNaoPassada(pedido.data_recebimento)) {
-        erros.push('Data de Recebimento não pode ser no passado.');
     }
     // 8. data_envio (Opcional, mas se preenchido, deve ser após ou igual à data de recebimento)
     if (validarObrigatorio(pedido.data_envio)) {

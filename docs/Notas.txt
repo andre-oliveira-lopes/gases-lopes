@@ -1,10 +1,6 @@
 ----------> commit: 
-Pedidos Especiais: adicionar novos campos, PF/PJ no modal e soft delete
-- Adiciona campos na tabela: tipo_cliente, nome_empresa, cnpj, fornecedor_nome e ocultarPedido
-- Implementa soft delete usando a coluna ocultarPedido em vez de excluir registros
-- Atualiza busca para considerar nome da empresa, nome do fornecedor e CNPJ
-- Atualiza modal de pedidos especiais com seleção PF/PJ e campos dinâmicos de cliente (nome/CPF ou empresa/CNPJ)
-- Ajustei validação, salvamento, edição e listagem para suportar os novos campos. 
+Pedidos Especiais: Removi a validação de "não pode ser no passado" da Data de Recebimento para permitir lançamentos retroativos.
+- Melhorei o texto explicativo que fica na parte de cima da tela 
 
 
 ----------> Emojis

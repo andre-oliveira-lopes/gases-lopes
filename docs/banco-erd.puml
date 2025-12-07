@@ -1,0 +1,36 @@
+@startuml banco-erd
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+title Modelo Entidade-Relacionamento - Banco de Dados
+' As tabelas serão adicionadas aqui
+entity "pedidos_especiais" as pedidos_especiais {
+    * id : INTEGER [PK]
+    --
+    tipo_cliente      : TEXT
+    nome_pessoa       : TEXT
+    cpf               : TEXT
+    nome_empresa      : TEXT
+    cnpj              : TEXT
+    fornecedor_nome   : TEXT
+
+    status            : TEXT
+    tipo_gas          : TEXT
+    quantidade        : INTEGER
+    volume_por_kg     : REAL
+    valor_recarga     : REAL
+    desconto          : REAL
+    valor_total       : REAL
+
+    data_recebimento  : TEXT
+    data_envio        : TEXT
+    data_entrega      : TEXT
+
+    status_pagamento  : TEXT
+    observacoes       : TEXT
+
+    ocultarPedido     : INTEGER  // 0 = visível, 1 = oculto
+    created_at        : TEXT
+    updated_at        : TEXT
+}
+
+@enduml
