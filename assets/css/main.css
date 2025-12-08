@@ -457,7 +457,7 @@ body {
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow: hidden;
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
@@ -480,7 +480,11 @@ body {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   width: 90%;
   max-width: 900px;
+  max-height: 75vh;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   transform: translateY(-20px);
   transition: transform all 0.3s ease;
 }
@@ -496,6 +500,7 @@ body {
   border-bottom: 1px solid #e0e0e0;
   padding-bottom: 16px;
   margin-bottom: 24px;
+  flex-shrink: 0;
 }
 .modal-header h2 {
   margin: 0;
@@ -514,6 +519,11 @@ body {
 }
 .modal-header .close-btn:hover, .modal-header .close-btn:focus {
   color: #000000;
+}
+
+.modal-body {
+  overflow-y: auto;
+  flex: 1 1 auto;
 }
 
 .form-row {

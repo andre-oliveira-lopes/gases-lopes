@@ -205,150 +205,153 @@
                 <h2 id="modalTitle">Criar Novo Pedido Especial</h2>
                 <button class="close-btn">&times;</button>
             </div>
-            <form id="pedidoForm">
-                <input type="hidden" id="pedidoId"> <!-- Campo oculto para armazenar o ID do pedido em edição -->
 
-                <!-- ============================================ -->
-                <!-- NOVO: Seleção de Tipo de Cliente (PF/PJ) -->
-                <!-- ============================================ -->
-                <div class="form-row form-row--three-cols">
-                    <div class="form-group">
-                        <label for="tipoClienteSelect">Tipo de Cliente:</label>
-                        <select id="tipoClienteSelect" name="tipo_cliente" class="form-control">
-                            <option value="" selected disabled>Selecione o Tipo</option> 
-                            <option value="PF">Pessoa Física</option>
-                            <option value="PJ">Pessoa Jurídica</option>
-                        </select>
-                    </div>
+            <div class="modal-body">
+              <form id="pedidoForm">
+                  <input type="hidden" id="pedidoId"> <!-- Campo oculto para armazenar o ID do pedido em edição -->
 
-                <!-- ============================================ -->
-                <!-- Campos para Pessoa Física (visíveis por padrão) -->
-                <!-- ============================================ -->
-                <!-- Estes dois form-groups aparecerão lado a lado com o select quando PF for selecionado -->
-                <div id="nomePessoaGroup" class="form-group">
-                    <label for="nomePessoa">Nome do Cliente:</label>
-                    <input type="text" id="nomePessoa" name="nome_pessoa" required>
-                </div>
-                <div id="cpfGroup" class="form-group">
-                    <label for="cpf">CPF:</label>
-                    <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
-                </div>
+                  <!-- ============================================ -->
+                  <!-- NOVO: Seleção de Tipo de Cliente (PF/PJ) -->
+                  <!-- ============================================ -->
+                  <div class="form-row form-row--three-cols">
+                      <div class="form-group">
+                          <label for="tipoClienteSelect">Tipo de Cliente:</label>
+                          <select id="tipoClienteSelect" name="tipo_cliente" class="form-control">
+                              <option value="" selected disabled>Selecione o Tipo</option> 
+                              <option value="PF">Pessoa Física</option>
+                              <option value="PJ">Pessoa Jurídica</option>
+                          </select>
+                      </div>
 
-                <!-- ============================================ -->
-                <!-- NOVO: Campos para Pessoa Jurídica (ocultos por padrão) -->
-                <!-- ============================================ -->
-                    <!-- Estes dois form-groups aparecerão lado a lado com o select quando PJ for selecionado -->
-                    <div id="nomeEmpresaGroup" class="form-group" style="display: none;">
-                        <label for="nomeEmpresa">Nome da Empresa:</label>
-                        <input type="text" id="nomeEmpresa" name="nome_empresa">
-                    </div>
-                    <div id="cnpjGroup" class="form-group" style="display: none;">
-                        <label for="cnpj">CNPJ:</label>
-                        <input type="text" id="cnpj" name="cnpj" placeholder="00.000.000/0000-00">
-                    </div>
-                </div>
+                  <!-- ============================================ -->
+                  <!-- Campos para Pessoa Física (visíveis por padrão) -->
+                  <!-- ============================================ -->
+                  <!-- Estes dois form-groups aparecerão lado a lado com o select quando PF for selecionado -->
+                  <div id="nomePessoaGroup" class="form-group">
+                      <label for="nomePessoa">Nome do Cliente:</label>
+                      <input type="text" id="nomePessoa" name="nome_pessoa" required>
+                  </div>
+                  <div id="cpfGroup" class="form-group">
+                      <label for="cpf">CPF:</label>
+                      <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+                  </div>
 
-                <!-- ============================================ -->
-                <!-- NOVO: Campo para Nome do Fornecedor -->
-                <!-- ============================================ -->
-                <div class="form-group">
-                    <label for="fornecedorNome">Nome do Fornecedor:</label>
-                    <input type="text" id="fornecedorNome" name="fornecedor_nome">
-                </div>
+                  <!-- ============================================ -->
+                  <!-- NOVO: Campos para Pessoa Jurídica (ocultos por padrão) -->
+                  <!-- ============================================ -->
+                      <!-- Estes dois form-groups aparecerão lado a lado com o select quando PJ for selecionado -->
+                      <div id="nomeEmpresaGroup" class="form-group" style="display: none;">
+                          <label for="nomeEmpresa">Nome da Empresa:</label>
+                          <input type="text" id="nomeEmpresa" name="nome_empresa">
+                      </div>
+                      <div id="cnpjGroup" class="form-group" style="display: none;">
+                          <label for="cnpj">CNPJ:</label>
+                          <input type="text" id="cnpj" name="cnpj" placeholder="00.000.000/0000-00">
+                      </div>
+                  </div>
 
-                <!-- LINHA 2: Tipo de Gás, Quantidade e Volume/Kg -->
-                <div class="form-row form-row--three-cols">
-                    <div class="form-group">
-                        <label for="tipoGas">Tipo de Gás:</label>
-                        <select id="tipoGas" name="tipo_gas" required>
-                            <option value="">Selecione o tipo de gás</option>
-                            <option value="Oxigenio">Oxigênio</option>
-                            <option value="Acetileno">Acetileno</option>
-                            <option value="Argonio">Argônio</option>
-                            <option value="CO2">CO2</option>
-                            <option value="Nitrogenio">Nitrogênio</option>
-                            <option value="Helio">Hélio</option>
-                            <option value="Mistura">Mistura</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="quantidade">Quantidade:</label>
-                        <input type="number" id="quantidade" name="quantidade" value="1" min="1" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="volumePorKg">m³/Kg:</label>
-                        <input type="text" id="volumePorKg" name="volume_por_kg" placeholder="Ex: 10m³ ou 5kg" required>
-                    </div>
-                </div>
-                <!-- LINHA 3: Valor da Recarga e Status do Pagamento -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="valorRecarga">Valor Recarga (R$):</label>
-                        <input type="text" id="valorRecarga" name="valor_recarga" placeholder="0,00" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="metodoPagamento">Método de Pagamento</label>
-                        <select id="metodoPagamento" name="status_pagamento" class="form-control">
-                            <option value="Nenhum">Nenhum</option>
-                            <option value="Pix">Pix</option>
-                            <option value="Dinheiro">Dinheiro</option>
-                            <option value="Transferencia Bancaria">Transferência Bancária</option>
-                            <option value="Cartao de Credito">Cartão de Crédito</option>
-                            <option value="Cartao de Debito">Cartão de Débito</option>
-                            <option value="Boleto Bancario">Boleto Bancário</option>
-                            <option value="Outro">Outro</option>
-                        </select>
-                    </div>
-                </div>
-                <!-- AQUI: NOVO CAMPO: Status do Pedido -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="statusPedido">Status do Pedido:</label>
-                        <select id="statusPedido" name="status" class="form-control" required>
-                            <option value="Pendente">Pendente</option>
-                            <option value="Concluido">Concluído</option>
-                            <option value="Enviado">Enviado</option>
-                            <option value="Cancelado">Cancelado</option>
-                        </select>
-                    </div>
-                </div>
-                <!-- LINHA 4: Datas de Recebimento, Envio e Entrega -->
-                <div class="form-row form-row--three-cols">
-                    <div class="form-group">
-                        <label for="dataRecebimento">Data de recebimento:</label>
-                        <input type="date" id="dataRecebimento" name="data_recebimento" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="dataEnvio">Data de envio:</label>
-                        <input type="date" id="dataEnvio" name="data_envio">
-                    </div>
-                    <div class="form-group">
-                        <label for="dataEntrega">Data de entrega:</label>
-                        <input type="date" id="dataEntrega" name="data_entrega">
-                    </div>
-                </div>
-                <!-- LINHA 5: Desconto e Valor Total -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="desconto">Desconto (R$):</label>
-                        <input type="text" id="desconto" name="desconto" placeholder="0,00"> <!-- Placeholder já estava, mantido -->
-                    </div>
-                    <div class="form-group">
-                        <label for="valorTotal">Valor Total (R$):</label>
-                        <input type="text" id="valorTotal" name="valor_total" readonly>
-                    </div>
-                </div>
-                <!-- LINHA 6: Observações (largura total) -->
-                <div class="form-group">
-                    <label for="observacoes">Observação:</label>
-                    <textarea id="observacoes" name="observacoes" rows="3"></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary close-btn">Cancelar</button>
-                    <button type="submit" class="btn btn-primary" id="savePedidoBtn">Salvar Pedido</button>
-                </div>
-            </form>
-        </div>
+                  <!-- ============================================ -->
+                  <!-- NOVO: Campo para Nome do Fornecedor -->
+                  <!-- ============================================ -->
+                  <div class="form-group">
+                      <label for="fornecedorNome">Nome do Fornecedor:</label>
+                      <input type="text" id="fornecedorNome" name="fornecedor_nome">
+                  </div>
+
+                  <!-- LINHA 2: Tipo de Gás, Quantidade e Volume/Kg -->
+                  <div class="form-row form-row--three-cols">
+                      <div class="form-group">
+                          <label for="tipoGas">Tipo de Gás:</label>
+                          <select id="tipoGas" name="tipo_gas" required>
+                              <option value="">Selecione o tipo de gás</option>
+                              <option value="Oxigenio">Oxigênio</option>
+                              <option value="Acetileno">Acetileno</option>
+                              <option value="Argonio">Argônio</option>
+                              <option value="CO2">CO2</option>
+                              <option value="Nitrogenio">Nitrogênio</option>
+                              <option value="Helio">Hélio</option>
+                              <option value="Mistura">Mistura</option>
+                          </select>
+                      </div>
+                      <div class="form-group">
+                          <label for="quantidade">Quantidade:</label>
+                          <input type="number" id="quantidade" name="quantidade" value="1" min="1" required>
+                      </div>
+                      <div class="form-group">
+                          <label for="volumePorKg">m³/Kg:</label>
+                          <input type="text" id="volumePorKg" name="volume_por_kg" placeholder="Ex: 10m³ ou 5kg" required>
+                      </div>
+                  </div>
+                  <!-- LINHA 3: Valor da Recarga e Status do Pagamento -->
+                  <div class="form-row">
+                      <div class="form-group">
+                          <label for="valorRecarga">Valor Recarga (R$):</label>
+                          <input type="text" id="valorRecarga" name="valor_recarga" placeholder="0,00" required>
+                      </div>
+                      <div class="form-group">
+                          <label for="metodoPagamento">Método de Pagamento</label>
+                          <select id="metodoPagamento" name="status_pagamento" class="form-control">
+                              <option value="Nenhum">Nenhum</option>
+                              <option value="Pix">Pix</option>
+                              <option value="Dinheiro">Dinheiro</option>
+                              <option value="Transferencia Bancaria">Transferência Bancária</option>
+                              <option value="Cartao de Credito">Cartão de Crédito</option>
+                              <option value="Cartao de Debito">Cartão de Débito</option>
+                              <option value="Boleto Bancario">Boleto Bancário</option>
+                              <option value="Outro">Outro</option>
+                          </select>
+                      </div>
+                  </div>
+                  <!-- AQUI: NOVO CAMPO: Status do Pedido -->
+                  <div class="form-row">
+                      <div class="form-group">
+                          <label for="statusPedido">Status do Pedido:</label>
+                          <select id="statusPedido" name="status" class="form-control" required>
+                              <option value="Pendente">Pendente</option>
+                              <option value="Concluido">Concluído</option>
+                              <option value="Enviado">Enviado</option>
+                              <option value="Cancelado">Cancelado</option>
+                          </select>
+                      </div>
+                  </div>
+                  <!-- LINHA 4: Datas de Recebimento, Envio e Entrega -->
+                  <div class="form-row form-row--three-cols">
+                      <div class="form-group">
+                          <label for="dataRecebimento">Data de recebimento:</label>
+                          <input type="date" id="dataRecebimento" name="data_recebimento" required>
+                      </div>
+                      <div class="form-group">
+                          <label for="dataEnvio">Data de envio:</label>
+                          <input type="date" id="dataEnvio" name="data_envio">
+                      </div>
+                      <div class="form-group">
+                          <label for="dataEntrega">Data de entrega:</label>
+                          <input type="date" id="dataEntrega" name="data_entrega">
+                      </div>
+                  </div>
+                  <!-- LINHA 5: Desconto e Valor Total -->
+                  <div class="form-row">
+                      <div class="form-group">
+                          <label for="desconto">Desconto (R$):</label>
+                          <input type="text" id="desconto" name="desconto" placeholder="0,00"> <!-- Placeholder já estava, mantido -->
+                      </div>
+                      <div class="form-group">
+                          <label for="valorTotal">Valor Total (R$):</label>
+                          <input type="text" id="valorTotal" name="valor_total" readonly>
+                      </div>
+                  </div>
+                  <!-- LINHA 6: Observações (largura total) -->
+                  <div class="form-group">
+                      <label for="observacoes">Observação:</label>
+                      <textarea id="observacoes" name="observacoes" rows="3"></textarea>
+                  </div>
+                  <div class="form-actions">
+                      <button type="button" class="btn btn-secondary close-btn">Cancelar</button>
+                      <button type="submit" class="btn btn-primary" id="savePedidoBtn">Salvar Pedido</button>
+                  </div>
+              </form>
+            </div> <!-- fecha .modal-body -->
+        </div> <!-- fecha .modal-content -->
     </div>
 
     <!-- Modal de Confirmação de Exclusão -->

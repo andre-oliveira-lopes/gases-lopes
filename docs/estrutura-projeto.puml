@@ -1,0 +1,110 @@
+@startwbs estrutura-projeto
+skinparam shadowing false
+skinparam monochrome true
+skinparam backgroundColor white
+title Estrutura do Projeto GASES-LOPES (Electron App)
+' Visualização da Estrutura em WBS (Work Breakdown Structure)
+* GASES-LOPES (Raiz do Projeto)
+** assets (Recursos Estáticos)
+*** css (Estilos CSS)
+**** main.css
+**** main.css.map
+*** icons (Ícones SVG)
+**** buscar-icone.svg
+**** dashboard-icone.svg
+**** fornecedor-icones.svg
+**** google-icone.svg
+**** info-icones.svg
+**** inicio.svg
+**** nota-de-emprestimo.svg
+**** nota-de-entrega-icone.svg
+**** pedidos-especiais-icone.svg
+**** tabela-de-preco-icone.svg
+*** images (Imagens)
+**** feminina-com-oculos.png
+**** my-face.png
+*** js (JavaScript do Frontend)
+**** api (APIs para IPC)
+***** pedidos-especiais.js
+**** pages (Páginas Específicas)
+***** pedidos-especiais-page.js
+**** utils (Utilitários)
+***** formatters.js
+***** validators.js
+**** navigation.js
+**** topbar.js
+*** scss (Sass/SCSS - Estilos Modulares)
+**** abstracts (Abstrações)
+***** _mixins.scss
+***** _variables.scss
+**** base (Base/Reset)
+***** _reset.scss
+***** _typography.scss
+**** components (Componentes Reutilizáveis)
+***** _modals.scss
+***** _buttons.scss
+***** _cards.scss
+***** _page-common.scss
+**** layout (Layout Geral)
+***** _base.scss
+***** _footer.scss
+***** _header.scss
+***** _sidebar.scss
+***** _topbar.scss
+**** pages (Estilos por Página)
+***** _home.scss
+***** _pedidos-especiais.scss
+***** _tabela-precos.scss
+***** _fornecedor.scss
+***** _dados-cilindros.scss
+***** _dashboard.scss
+***** _nota-emprestimo.scss
+***** _nota-entrega.scss
+***** _buscar.scss
+**** main.scss (Entrada Principal)
+*** oxygen.ico (Ícone do App)
+** data (Dados Persistentes)
+*** gases-uniao.db (Banco SQLite)
+** database (Camada de Dados)
+*** migrations (Migrações)
+**** init.js
+*** models (Modelos ORM)
+**** fornecedores.js
+**** pedidos-especiais.js
+*** query-SQL (Consultas SQL)
+**** Select_teste.sql
+*** db.js (Conexão com SQLite)
+** dist (Builds Gerados - Ignorar no Git)
+*** gases-uniao-1.0-win32-x64
+*** gases-uniao-1.1-win32-x64
+** docs (Documentação)
+*** img (Imagens Geradas)
+**** banco-erd
+***** banco-erd.svg
+*** banco-erd.puml (ERD do Banco)
+*** Notas.txt
+** node_modules (Dependências NPM - Ignorar no Git)
+** pages (Páginas HTML Principais)
+*** _template-page.html (Template Base)
+*** buscar.html
+*** dados-cilindros.html
+*** dashboard.html
+*** fornecedor.html
+*** nota-emprestimo.html
+*** nota-entrega.html
+*** pedidos-especiais.html
+*** tabela-precos.html
+** pages_config (Configurações de Páginas)
+*** aparencia-content.html
+*** conta-content.html
+*** notificacoes-content.html
+*** sobre-content.html
+** Arquivos Raiz (Configuração e Entrada)
+*** .gitignore
+*** index.html (Página Inicial)
+*** main.js (Processo Principal Electron)
+*** package.json (Dependências e Scripts)
+*** package-lock.json (Lock de Dependências)
+*** README.md (Documentação Geral)
+
+@endwbs

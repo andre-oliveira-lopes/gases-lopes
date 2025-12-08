@@ -2,7 +2,7 @@
 skinparam shadowing false
 skinparam classAttributeIconSize 0
 title Modelo Entidade-Relacionamento - Banco de Dados
-' As tabelas serão adicionadas aqui
+' As tabelas serão adicionadas aqui. Montar um PlantUML completo do meu projeto baseado no init.js 
 entity "pedidos_especiais" as pedidos_especiais {
     * id : INTEGER [PK]
     --

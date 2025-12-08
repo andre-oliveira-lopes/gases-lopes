@@ -1,6 +1,6 @@
 ----------> commit: 
-Pedidos Especiais: Removi a validação de "não pode ser no passado" da Data de Recebimento para permitir lançamentos retroativos.
-- Melhorei o texto explicativo que fica na parte de cima da tela 
+Pedidos Especiais: Adicionei um novo comando no package.json, o 'npm run gerar-estrutura' que gera a extrutura do meu projeto atual e me da em um arquivo .txt chamado 'estrutura_do_projeto.txt', pra isso baixei outro modulo para o node 'tree-cli'. para um visual em imagem desse meu projeto, fiz a mesma ideia em plantUML 'estrutura-projeto.puml'. Adicionei barra de rolagem dentro do modal, tirei ela da pagina. 
+
 
 
 ----------> Emojis

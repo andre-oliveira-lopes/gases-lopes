@@ -12,7 +12,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto; // Habilita scroll se o conteúdo for muito grande
+    overflow: hidden; // Evita scroll na página de fundo
     background-color: rgba(0, 0, 0, 0.6); // Fundo escuro semi-transparente
     display: flex; // Usamos flex para centralizar o conteúdo
     justify-content: center;
@@ -35,7 +35,11 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); // Sombra
     width: 90%; // Largura responsiva
     max-width: var.$modal-width-lg; // <--- AGORA USANDO A NOVA VARIÁVEL DE LARGURA
+    max-height: 75vh;
     position: relative;
+    display: flex; // ← NOVO: organiza header + body verticalmente
+    flex-direction: column; // ← NOVO: empilha verticalmente
+    overflow: hidden; // ← NOVO: garante que bordas arredondadas funcionem
     transform: translateY(-20px); // Começa um pouco acima para a animação
     transition: transform var.$transition-base; // Transição suave
 }
@@ -51,6 +55,7 @@
     border-bottom: 1px solid var.$color-border; // Borda inferior
     padding-bottom: var.$spacing-md;
     margin-bottom: var.$spacing-lg;
+    flex-shrink: 0; // ← NOVO: impede que o header encolha quando há muito conteúdo
 
     h2 {
         margin: 0;
@@ -74,6 +79,12 @@
         }
     }
 }
+
+.modal-body {
+    overflow-y: auto; // ← AQUI: permite scroll vertical apenas no corpo do modal
+    flex: 1 1 auto; // ← MUDOU: de "flex-grow: 1" para "flex: 1 1 auto"
+}
+
 
 // ============================================
 // NOVOS ESTILOS PARA O LAYOUT HORIZONTAL DO FORMULÁRIO
