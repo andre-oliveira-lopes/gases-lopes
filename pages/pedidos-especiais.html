@@ -345,14 +345,14 @@
                       <label for="observacoes">Observação:</label>
                       <textarea id="observacoes" name="observacoes" rows="3"></textarea>
                   </div>
-                  <div class="form-actions">
-                      <button type="button" class="btn btn-secondary close-btn">Cancelar</button>
-                      <button type="submit" class="btn btn-primary" id="savePedidoBtn">Salvar Pedido</button>
-                  </div>
-              </form>
+              </form> <!-- fecha form #pedidoForm -->
             </div> <!-- fecha .modal-body -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary close-btn">Cancelar</button>
+              <button type="submit" class="btn btn-primary" id="savePedidoBtn" form="pedidoForm">Salvar Pedido</button>
+            </div>
         </div> <!-- fecha .modal-content -->
-    </div>
+    </div> <!-- fecha #pedidoModal -->
 
     <!-- Modal de Confirmação de Exclusão -->
     <div id="confirmDeleteModal" class="modal">

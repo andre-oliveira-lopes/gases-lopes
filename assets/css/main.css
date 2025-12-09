@@ -522,8 +522,23 @@ body {
 }
 
 .modal-body {
+  padding-left: 32px;
+  padding-right: 32px;
   overflow-y: auto;
   flex: 1 1 auto;
+}
+
+.modal-footer {
+  padding-top: 16px;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 2px;
+  border-top: 1px solid #e0e0e0;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
 .form-row {

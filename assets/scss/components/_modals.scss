@@ -81,10 +81,25 @@
 }
 
 .modal-body {
-    overflow-y: auto; // ← AQUI: permite scroll vertical apenas no corpo do modal
-    flex: 1 1 auto; // ← MUDOU: de "flex-grow: 1" para "flex: 1 1 auto"
+    // padding-top: var.$spacing-xl; 
+    padding-left: var.$spacing-xl;
+    padding-right: var.$spacing-xl; 
+    overflow-y: auto;
+    flex: 1 1 auto;
 }
 
+.modal-footer {
+    padding-top: var.$spacing-md; // ← Aqui você controla exatamente o espaço em cima
+    padding-left: var.$spacing-lg; // ← Aqui você controla exatamente o espaço à esquerda
+    padding-right: var.$spacing-lg; // ← Aqui você controla exatamente o espaço à direita
+    padding-bottom: var.$spacing-xxxs; // ← Aqui você controla exatamente o espaço embaixo
+    border-top: 1px solid var.$color-border; // Linha separadora sutil
+    background-color: var.$color-background; // Fundo consistente com o modal
+    display: flex;
+    justify-content: flex-end; // Alinha os botões à direita
+    gap: var.$spacing-sm; // Espaço entre Cancelar e Salvar
+    flex-shrink: 0; // ← Como você prefere: não encolhe, fica sempre visível
+}
 
 // ============================================
 // NOVOS ESTILOS PARA O LAYOUT HORIZONTAL DO FORMULÁRIO

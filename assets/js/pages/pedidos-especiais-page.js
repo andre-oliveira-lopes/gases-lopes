@@ -318,6 +318,7 @@ function criarCardPedido(pedido) {
 
 // ============================================
 // MODAL DE NOVO/EDITAR PEDIDO
+// OBRIGAÇÃO: abre o modal para criar um novo pedido.
 // ============================================
 function abrirModalNovoPedido() {
     pedidoEditando = null; // Novo pedido
@@ -340,6 +341,12 @@ function abrirModalNovoPedido() {
 
     if (pedidoModal) {
         pedidoModal.classList.add('show');
+
+        // Reseta o scroll do modal-body para o topo
+        const modalBody = pedidoModal.querySelector('.modal-body');
+        if (modalBody) {
+            modalBody.scrollTop = 0; // ← Define a posição do scroll para o topo (0)
+        }
     }
     if (savePedidoBtn) {
         savePedidoBtn.textContent = 'Criar Pedido';
@@ -400,6 +407,12 @@ async function abrirModalEditar(id) {
         // Exibe o modal e atualiza o botão
         if (pedidoModal) {
             pedidoModal.classList.add('show');
+
+            // Reseta o scroll do modal-body para o topo
+            const modalBody = pedidoModal.querySelector('.modal-body');
+            if (modalBody) {
+                modalBody.scrollTop = 0; // ← Define a posição do scroll para o topo (0)
+            }
         }
         if (savePedidoBtn) {
             savePedidoBtn.textContent = 'Atualizar Pedido';
@@ -652,27 +665,37 @@ async function deletarPedidoConfirmado() {
 // FUNÇÕES DE MENSAGENS
 // ============================================
 function mostrarMensagemSucesso(mensagem) {
-    // Cria um elemento de notificação temporária
     const notificacao = document.createElement('div');
     notificacao.className = 'notification success';
     notificacao.innerHTML = `
         <span>✅</span> ${mensagem}
     `;
     notificacao.style.cssText = `
-        position: fixed; top: 20px; right: 20px; 
-        background: #d4edda; color: #155724; 
-        padding: 15px 20px; border-radius: 8px; 
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        left: auto;
+        top: auto;
+        background: #d4edda;
+        color: #155724;
+        padding: 15px 20px;
+        border-radius: 8px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        z-index: 9999; font-weight: 500;
+        z-index: 9999;
+        font-weight: 500;
         animation: slideInRight 0.3s ease;
     `;
-
     document.body.appendChild(notificacao);
 
-    // Remove após 4 segundos
+    // Inicia a animação de saída após 3.5 segundos
     setTimeout(() => {
-        notificacao.remove();
-    }, 4000);
+        notificacao.style.animation = 'slideOutRight 0.3s ease forwards';
+
+        // Remove do DOM após a animação completar (300ms)
+        setTimeout(() => {
+            notificacao.remove();
+        }, 300);
+    }, 3500);
 }
 
 function mostrarMensagemErro(mensagem) {
@@ -682,21 +705,33 @@ function mostrarMensagemErro(mensagem) {
         <span>❌</span> ${mensagem}
     `;
     notificacao.style.cssText = `
-        position: fixed; top: 20px; right: 20px; 
-        background: #f8d7da; color: #721c24; 
-        padding: 15px 20px; border-radius: 8px; 
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        left: auto;
+        top: auto;
+        background: #f8d7da;
+        color: #721c24;
+        padding: 15px 20px;
+        border-radius: 8px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        z-index: 9999; font-weight: 500;
-        max-width: 400px; line-height: 1.4;
+        z-index: 9999;
+        font-weight: 500;
+        max-width: 400px;
+        line-height: 1.4;
         animation: slideInRight 0.3s ease;
     `;
-
     document.body.appendChild(notificacao);
 
-    // Remove após 6 segundos
+    // Inicia a animação de saída após 5.5 segundos (erro fica mais tempo)
     setTimeout(() => {
-        notificacao.remove();
-    }, 6000);
+        notificacao.style.animation = 'slideOutRight 0.3s ease forwards';
+
+        // Remove do DOM após a animação completar (300ms)
+        setTimeout(() => {
+            notificacao.remove();
+        }, 300);
+    }, 5500);
 }
 
 // ============================================
@@ -716,11 +751,18 @@ style.textContent = `
         from { transform: translateX(100%); opacity: 0; }
         to { transform: translateX(0); opacity: 1; }
     }
+
+    @keyframes slideOutRight {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+
     .notification { 
         display: flex; align-items: center; gap: 10px; 
     }
 `;
 document.head.appendChild(style);
+
 
 // ============================================
 // INÍCIO DA NOVA FUNCIONALIDADE: BUSCA AUTOMÁTICA AO LIMPAR 
